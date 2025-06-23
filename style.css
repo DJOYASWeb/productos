@@ -8,7 +8,11 @@ h1 {
   color: #333;
 }
 .controls {
-  margin-bottom: 20px;
+border-radius: 20px;
+    box-shadow: 0px 0px 30px 0px rgba(2, 12, 12, 0.1);
+    margin: 1rem auto;
+    padding: 3rem;
+    transition: .6s;
   text-align: center;
 }
 input, select, button {
