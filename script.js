@@ -19,8 +19,8 @@ const orden = document.getElementById('orden');
 const modal = document.getElementById('modal');
 const cerrarModal = document.getElementById('cerrarModal');
 const modalNombre = document.getElementById('modalNombre');
-const modalImagen = document.getElementById('modalImagen');
 const modalID = document.getElementById('modalID');
+const modalImagen = document.getElementById('modalImagen');
 const modalSKU = document.getElementById('modalSKU');
 const modalCategoria = document.getElementById('modalCategoria');
 const modalResumen = document.getElementById('modalResumen');
@@ -83,13 +83,29 @@ function mostrarModal(producto) {
   modalCategoria.textContent = producto.categoria || "";
   modalResumen.textContent = producto.resumen || "";
   modalCaracteristicas.textContent = producto.caracteristicas || "";
-  modalImagen.textContent = producto.imagen || "";
+
+  const imagenURL = producto.imagen || "";
+  const copyHTML = `
+    <p><strong>Link imagen:</strong> <span style="word-break: break-all;">${imagenURL}</span>
+    <button onclick="navigator.clipboard.writeText('${imagenURL}')" style="margin-left: 5px; cursor: pointer;">📋</button></p>
+  `;
+  modalCaracteristicas.insertAdjacentHTML('afterend', copyHTML);
+
   modal.classList.remove('hidden');
 }
 
-cerrarModal.addEventListener("click", () => modal.classList.add('hidden'));
+cerrarModal.addEventListener("click", () => {
+  modal.classList.add('hidden');
+  const extra = document.querySelector('p strong + span + button')?.parentElement;
+  if (extra) extra.remove();
+});
+
 window.addEventListener("click", e => {
-  if (e.target === modal) modal.classList.add('hidden');
+  if (e.target === modal) {
+    modal.classList.add('hidden');
+    const extra = document.querySelector('p strong + span + button')?.parentElement;
+    if (extra) extra.remove();
+  }
 });
 
 function cargarCategorias() {
