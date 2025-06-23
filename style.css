@@ -113,3 +113,14 @@ hr{
 padding: 5px;
 background: #e5e5e5;
 }
+
+.mensaje-copiado {
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  opacity: 0;
+  transform: translateY(5px);
+}
+
+.mensaje-copiado.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

@@ -100,7 +100,12 @@ function copiarURL(texto, boton) {
   navigator.clipboard.writeText(texto).then(() => {
     const mensaje = boton.nextElementSibling;
     mensaje.classList.remove('hidden');
-    setTimeout(() => mensaje.classList.add('hidden'), 1500);
+    mensaje.classList.add('visible');
+
+    setTimeout(() => {
+      mensaje.classList.remove('visible');
+      mensaje.classList.add('hidden');
+    }, 1500);
   });
 }
 
