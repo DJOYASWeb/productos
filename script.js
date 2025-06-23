@@ -10,8 +10,18 @@ fetch('productos_djoyas.json')
 
 const contenedor = document.getElementById('contenedorProductos');
 const buscador = document.getElementById('buscador');
+const botonBuscar = document.getElementById('botonBuscar');
 const filtroCategoria = document.getElementById('filtroCategoria');
 const orden = document.getElementById('orden');
+
+const modal = document.getElementById('modal');
+const cerrarModal = document.getElementById('cerrarModal');
+const modalNombre = document.getElementById('modalNombre');
+const modalImagen = document.getElementById('modalImagen');
+const modalSKU = document.getElementById('modalSKU');
+const modalCategoria = document.getElementById('modalCategoria');
+const modalResumen = document.getElementById('modalResumen');
+const modalCaracteristicas = document.getElementById('modalCaracteristicas');
 
 function mostrarProductos() {
   const texto = buscador.value.toLowerCase();
@@ -19,17 +29,13 @@ function mostrarProductos() {
   const ordenarPor = orden.value;
 
   let filtrados = productos.filter(p =>
-    p.nombre && (
-      p.nombre.toLowerCase().includes(texto) ||
-      (p.caracteristicas && p.caracteristicas.toLowerCase().includes(texto)) ||
-      (p.resumen && p.resumen.toLowerCase().includes(texto))
-    ) &&
+    p.sku && p.sku.toLowerCase().includes(texto) &&
     (categoria === "" || (p.categoria && p.categoria.includes(categoria)))
   );
 
   filtrados.sort((a, b) => {
     if (ordenarPor === "nombre") {
-      return a.nombre.localeCompare(b.nombre);
+      return a.nombre?.localeCompare(b.nombre || "") || 0;
     } else {
       return a.id - b.id;
     }
@@ -44,9 +50,26 @@ function mostrarProductos() {
       <h3>${p.nombre || 'Producto sin nombre'}</h3>
       <p>${p.categoria || ""}</p>
     `;
+    div.addEventListener('click', () => mostrarModal(p));
     contenedor.appendChild(div);
   });
 }
+
+function mostrarModal(producto) {
+  modalNombre.textContent = producto.nombre || "";
+  modalImagen.src = producto.imagen || "";
+  modalImagen.alt = producto.nombre || "";
+  modalSKU.textContent = producto.sku || "";
+  modalCategoria.textContent = producto.categoria || "";
+  modalResumen.textContent = producto.resumen || "";
+  modalCaracteristicas.textContent = producto.caracteristicas || "";
+  modal.classList.remove('hidden');
+}
+
+cerrarModal.addEventListener("click", () => modal.classList.add('hidden'));
+window.addEventListener("click", e => {
+  if (e.target === modal) modal.classList.add('hidden');
+});
 
 function cargarCategorias() {
   const categorias = [...new Set(productos
@@ -57,6 +80,9 @@ function cargarCategorias() {
     categorias.map(c => `<option value="${c}">${c}</option>`).join("");
 }
 
-buscador.addEventListener("input", mostrarProductos);
+botonBuscar.addEventListener("click", mostrarProductos);
+buscador.addEventListener("keypress", e => {
+  if (e.key === "Enter") mostrarProductos();
+});
 filtroCategoria.addEventListener("change", mostrarProductos);
 orden.addEventListener("change", mostrarProductos);
