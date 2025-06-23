@@ -96,3 +96,9 @@ button:hover {
 .izquierda, .derecha{
   width: 50%;
 }
+
+.filtros{
+    padding: 1rem 0rem;
+    display: flex;
+    flex-direction: row-reverse;
+}
