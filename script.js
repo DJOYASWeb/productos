@@ -87,7 +87,7 @@ function mostrarModal(producto) {
   const imagenURL = producto.imagen || "";
   const copyHTML = `
     <p><strong>Link imagen:</strong> <span style="word-break: break-all;">${imagenURL}</span>
-    <button onclick="navigator.clipboard.writeText('${imagenURL}')" style="margin-left: 5px; cursor: pointer;">📋</button></p>
+    <button class="portapapeles" onclick="navigator.clipboard.writeText('${imagenURL}')" style="margin-left: 5px; cursor: pointer;">📋</button></p>
   `;
   modalCaracteristicas.insertAdjacentHTML('afterend', copyHTML);
 

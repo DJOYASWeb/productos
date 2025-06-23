@@ -108,3 +108,8 @@ button:hover {
 hr{
     border: 0.5px solid #efefef;
 }
+
+.portapapeles{
+padding: 5px;
+background: #e5e5e5;
+}
