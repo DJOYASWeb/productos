@@ -7,7 +7,7 @@ fetch('productos_djoyas.json')
   .then(data => {
     productos = data;
     cargarCategorias();
-    mostrarProductos(true);
+    mostrarInicio();
   });
 
 const contenedor = document.getElementById('contenedorProductos');
@@ -25,15 +25,30 @@ const modalCategoria = document.getElementById('modalCategoria');
 const modalResumen = document.getElementById('modalResumen');
 const modalCaracteristicas = document.getElementById('modalCaracteristicas');
 
-function mostrarProductos(esInicio = false) {
+function mostrarInicio() {
+  const primeros = productos.slice(0, productosMostrados);
+  contenedor.innerHTML = "";
+  primeros.forEach(p => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `
+      <img src="${p.imagen}" alt="${p.nombre || 'Sin nombre'}">
+      <h3>${p.nombre || 'Producto sin nombre'}</h3>
+      <p>${p.categoria || ""}</p>
+    `;
+    div.addEventListener('click', () => mostrarModal(p));
+    contenedor.appendChild(div);
+  });
+}
+
+function mostrarProductos() {
   const texto = buscador.value.toLowerCase();
   const categoria = filtroCategoria.value;
   const ordenarPor = orden.value;
 
   let filtrados = productos.filter(p =>
-    esInicio || (p.sku && p.sku.toLowerCase().includes(texto))
-  ).filter(p =>
-    categoria === "" || (p.categoria && p.categoria.includes(categoria))
+    p.sku && p.sku.toLowerCase().includes(texto) &&
+    (categoria === "" || (p.categoria && p.categoria.includes(categoria)))
   );
 
   filtrados.sort((a, b) => {
@@ -45,9 +60,7 @@ function mostrarProductos(esInicio = false) {
   });
 
   contenedor.innerHTML = "";
-  const limite = esInicio ? productosMostrados : filtrados.length;
-
-  filtrados.slice(0, limite).forEach(p => {
+  filtrados.forEach(p => {
     const div = document.createElement('div');
     div.className = 'card';
     div.innerHTML = `
@@ -85,9 +98,9 @@ function cargarCategorias() {
     categorias.map(c => `<option value="${c}">${c}</option>`).join("");
 }
 
-botonBuscar.addEventListener("click", () => mostrarProductos(false));
+botonBuscar.addEventListener("click", mostrarProductos);
 buscador.addEventListener("keypress", e => {
-  if (e.key === "Enter") mostrarProductos(false);
+  if (e.key === "Enter") mostrarProductos();
 });
-filtroCategoria.addEventListener("change", () => mostrarProductos(false));
-orden.addEventListener("change", () => mostrarProductos(false));
+filtroCategoria.addEventListener("change", mostrarProductos);
+orden.addEventListener("change", mostrarProductos);
