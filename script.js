@@ -20,6 +20,7 @@ const modal = document.getElementById('modal');
 const cerrarModal = document.getElementById('cerrarModal');
 const modalNombre = document.getElementById('modalNombre');
 const modalImagen = document.getElementById('modalImagen');
+const modalID = document.getElementById('modalID');
 const modalSKU = document.getElementById('modalSKU');
 const modalCategoria = document.getElementById('modalCategoria');
 const modalResumen = document.getElementById('modalResumen');
