@@ -85,7 +85,6 @@ function mostrarModal(producto) {
   modalCaracteristicas.textContent = producto.caracteristicas || "";
 
   const imagenURL = producto.imagen || "";
-  const imagenNombre = producto.nombre || "";
   const copyHTML = `
     <p><strong>Link imagen:</strong> <span style="word-break: break-all;">${imagenURL}</span>
     <button class="portapapeles" onclick="navigator.clipboard.writeText('${imagenURL}')" style="margin-left: 5px; cursor: pointer;">📋</button></p>
