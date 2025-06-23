@@ -1,4 +1,3 @@
-// script.js
 let productos = [];
 let productosMostrados = 25;
 
@@ -86,12 +85,23 @@ function mostrarModal(producto) {
 
   const imagenURL = producto.imagen || "";
   const copyHTML = `
-    <p><strong>Link imagen:</strong> <span style="word-break: break-all;">${imagenURL}</span>
-    <button class="portapapeles" onclick="navigator.clipboard.writeText('${imagenURL}')" style="margin-left: 5px; cursor: pointer;">📋</button></p>
+    <p style="position: relative;">
+      <strong>Link imagen:</strong> <span style="word-break: break-all;">${imagenURL}</span>
+      <button class="portapapeles" onclick="copiarURL('${imagenURL}', this)" style="margin-left: 5px; cursor: pointer;">📋</button>
+      <span class="mensaje-copiado hidden" style="position: absolute; right: 0; top: 100%; background: #fff; padding: 2px 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.8em;">✅ Copiado</span>
+    </p>
   `;
   modalCaracteristicas.insertAdjacentHTML('afterend', copyHTML);
 
   modal.classList.remove('hidden');
+}
+
+function copiarURL(texto, boton) {
+  navigator.clipboard.writeText(texto).then(() => {
+    const mensaje = boton.nextElementSibling;
+    mensaje.classList.remove('hidden');
+    setTimeout(() => mensaje.classList.add('hidden'), 1500);
+  });
 }
 
 cerrarModal.addEventListener("click", () => {
