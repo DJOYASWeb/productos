@@ -68,8 +68,9 @@ button:hover {
   padding: 20px;
   border-radius: 8px;
   width: 90%;
-  max-width: 500px;
+  max-width: 800px;
   position: relative;
+  display: flex;
 }
 .cerrar {
   position: absolute;
@@ -80,4 +81,10 @@ button:hover {
 }
 .hidden {
   display: none;
+}
+.izquierda img{
+  width: 100%;
+}
+.izquierda, .derecha{
+  width: 50%;
 }
