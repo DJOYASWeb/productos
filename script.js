@@ -88,7 +88,7 @@ function mostrarModal(producto) {
     <p style="position: relative;">
       <strong>Link imagen:</strong> <span style="word-break: break-all;">${imagenURL}</span>
       <button class="portapapeles" onclick="copiarURL('${imagenURL}', this)" style="margin-left: 5px; cursor: pointer;">📋</button>
-      <span class="mensaje-copiado hidden" style="position: absolute; right: 0; top: 100%; background: #fff; padding: 2px 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.8em;">✅ Copiado</span>
+      <span class="mensaje-copiado hidden" style="position: absolute; top: 40%; background: #cbffd4; padding:0.25rem 1rem; border-radius: 4px; font-size: 0.8em;">✅ Copiado</span>
     </p>
   `;
   modalCaracteristicas.insertAdjacentHTML('afterend', copyHTML);
