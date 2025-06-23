@@ -83,6 +83,7 @@ function mostrarModal(producto) {
   modalCategoria.textContent = producto.categoria || "";
   modalResumen.textContent = producto.resumen || "";
   modalCaracteristicas.textContent = producto.caracteristicas || "";
+  modalImagen.src = producto.imagen || "";
   modal.classList.remove('hidden');
 }
 
