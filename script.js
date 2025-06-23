@@ -18,11 +18,13 @@ function mostrarProductos() {
   const categoria = filtroCategoria.value;
   const ordenarPor = orden.value;
 
-  let filtrados = productos.filter(p => 
-    (p.nombre.toLowerCase().includes(texto) ||
-     (p.caracteristicas && p.caracteristicas.toLowerCase().includes(texto)) ||
-     (p.resumen && p.resumen.toLowerCase().includes(texto))) &&
-    (categoria === "" || p.categoria?.includes(categoria))
+  let filtrados = productos.filter(p =>
+    p.nombre && (
+      p.nombre.toLowerCase().includes(texto) ||
+      (p.caracteristicas && p.caracteristicas.toLowerCase().includes(texto)) ||
+      (p.resumen && p.resumen.toLowerCase().includes(texto))
+    ) &&
+    (categoria === "" || (p.categoria && p.categoria.includes(categoria)))
   );
 
   filtrados.sort((a, b) => {
@@ -38,8 +40,8 @@ function mostrarProductos() {
     const div = document.createElement('div');
     div.className = 'card';
     div.innerHTML = `
-      <img src="${p.imagen}" alt="${p.nombre}">
-      <h3>${p.nombre}</h3>
+      <img src="${p.imagen}" alt="${p.nombre || 'Sin nombre'}">
+      <h3>${p.nombre || 'Producto sin nombre'}</h3>
       <p>${p.categoria || ""}</p>
     `;
     contenedor.appendChild(div);
@@ -47,7 +49,10 @@ function mostrarProductos() {
 }
 
 function cargarCategorias() {
-  const categorias = [...new Set(productos.flatMap(p => (p.categoria || "").split(",").map(c => c.trim())))].sort();
+  const categorias = [...new Set(productos
+    .flatMap(p => (p.categoria || "").split(",").map(c => c.trim()))
+    .filter(c => c))].sort();
+
   filtroCategoria.innerHTML = '<option value="">Todas las categorías</option>' +
     categorias.map(c => `<option value="${c}">${c}</option>`).join("");
 }
