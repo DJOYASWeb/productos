@@ -77,6 +77,7 @@ function mostrarModal(producto) {
   modalNombre.textContent = producto.nombre || "";
   modalImagen.src = producto.imagen || "";
   modalImagen.alt = producto.nombre || "";
+  modalID.textContent = producto.id || "";
   modalSKU.textContent = producto.sku || "";
   modalCategoria.textContent = producto.categoria || "";
   modalResumen.textContent = producto.resumen || "";
