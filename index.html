@@ -10,7 +10,7 @@
 <body>
   <h1>Galería de Productos DJOYAS</h1>
   <div class="controls">
-    <input type="text" id="buscador" placeholder="Buscar producto..." />
+    <input type="text" id="buscador" placeholder="Buscar por SKU..." />
     <button id="botonBuscar">Buscar</button>
     <select id="filtroCategoria"></select>
     <select id="orden">
@@ -19,6 +19,18 @@
     </select>
   </div>
   <div class="grid" id="contenedorProductos"></div>
+
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <span id="cerrarModal" class="cerrar">&times;</span>
+      <h2 id="modalNombre"></h2>
+      <img id="modalImagen" src="" alt="">
+      <p><strong>SKU:</strong> <span id="modalSKU"></span></p>
+      <p><strong>Categoría:</strong> <span id="modalCategoria"></span></p>
+      <p><strong>Resumen:</strong> <span id="modalResumen"></span></p>
+      <p><strong>Características:</strong> <span id="modalCaracteristicas"></span></p>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
