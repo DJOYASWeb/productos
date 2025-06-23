@@ -1,11 +1,13 @@
+// script.js
 let productos = [];
+let productosMostrados = 25;
 
 fetch('productos_djoyas.json')
   .then(response => response.json())
   .then(data => {
     productos = data;
     cargarCategorias();
-    mostrarProductos();
+    mostrarProductos(true);
   });
 
 const contenedor = document.getElementById('contenedorProductos');
@@ -23,26 +25,29 @@ const modalCategoria = document.getElementById('modalCategoria');
 const modalResumen = document.getElementById('modalResumen');
 const modalCaracteristicas = document.getElementById('modalCaracteristicas');
 
-function mostrarProductos() {
+function mostrarProductos(esInicio = false) {
   const texto = buscador.value.toLowerCase();
   const categoria = filtroCategoria.value;
   const ordenarPor = orden.value;
 
   let filtrados = productos.filter(p =>
-    p.sku && p.sku.toLowerCase().includes(texto) &&
-    (categoria === "" || (p.categoria && p.categoria.includes(categoria)))
+    esInicio || (p.sku && p.sku.toLowerCase().includes(texto))
+  ).filter(p =>
+    categoria === "" || (p.categoria && p.categoria.includes(categoria))
   );
 
   filtrados.sort((a, b) => {
     if (ordenarPor === "nombre") {
-      return a.nombre?.localeCompare(b.nombre || "") || 0;
+      return (a.nombre || "").localeCompare(b.nombre || "");
     } else {
       return a.id - b.id;
     }
   });
 
   contenedor.innerHTML = "";
-  filtrados.forEach(p => {
+  const limite = esInicio ? productosMostrados : filtrados.length;
+
+  filtrados.slice(0, limite).forEach(p => {
     const div = document.createElement('div');
     div.className = 'card';
     div.innerHTML = `
@@ -80,9 +85,9 @@ function cargarCategorias() {
     categorias.map(c => `<option value="${c}">${c}</option>`).join("");
 }
 
-botonBuscar.addEventListener("click", mostrarProductos);
+botonBuscar.addEventListener("click", () => mostrarProductos(false));
 buscador.addEventListener("keypress", e => {
-  if (e.key === "Enter") mostrarProductos();
+  if (e.key === "Enter") mostrarProductos(false);
 });
-filtroCategoria.addEventListener("change", mostrarProductos);
-orden.addEventListener("change", mostrarProductos);
+filtroCategoria.addEventListener("change", () => mostrarProductos(false));
+orden.addEventListener("change", () => mostrarProductos(false));
