@@ -193,21 +193,80 @@ background: #e5e5e5;
   display: none;
 }
 
-#cotizacionForm {
-  display: flex;
-  flex-direction: column;
-  max-width: 300px;
-  gap: 10px;
-}
-
-#tablaCotizaciones {
-  width: 100%;
-  border-collapse: collapse;
+#cotizaciones {
+  padding: 1rem 2rem;
+  background-color: #f9f9f9;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.04);
   margin-top: 1rem;
 }
 
-#tablaCotizaciones th, #tablaCotizaciones td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: left;
+#nuevaCotizacionBtn {
+  background-color: #007aff;
+  border-radius: 12px;
+  font-size: 1rem;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  color: white;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  transition: background 0.3s ease;
+}
+
+#nuevaCotizacionBtn:hover {
+  background-color: #005ecb;
+}
+
+#cotizacionForm label {
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+#cotizacionForm input,
+#cotizacionForm select {
+  border: 1px solid #d0d0d0;
+  border-radius: 12px;
+  padding: 0.7rem 1rem;
+  font-size: 1rem;
+  background-color: #ffffff;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+  transition: border 0.2s ease;
+}
+
+#cotizacionForm input:focus,
+#cotizacionForm select:focus {
+  border-color: #007aff;
+  outline: none;
+}
+
+#cotizacionForm button[type="submit"] {
+  background-color: #34c759;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#cotizacionForm button[type="submit"]:hover {
+  background-color: #28a745;
+}
+
+#precioTotal {
+  font-weight: bold;
+  color: #000;
+}
+
+#tablaCotizaciones th {
+  background-color: #f1f1f1;
+  color: #333;
+  font-weight: 600;
+}
+
+#tablaCotizaciones td {
+  background-color: #fff;
 }
