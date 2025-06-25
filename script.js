@@ -158,8 +158,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 // === Cotizaciones ===
-let cotizaciones = [];
-
 const cotizacionFormDiv = document.getElementById('formCotizacion');
 const cotizacionForm = document.getElementById('cotizacionForm');
 const nuevaCotizacionBtn = document.getElementById('nuevaCotizacionBtn');
