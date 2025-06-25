@@ -286,3 +286,16 @@ background: #e5e5e5;
 #volverBtn:hover {
   background-color: #d0d0d0;
 }
+
+#detalleCotizacion {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-top: 2rem;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+#detalleCotizacion ul {
+  padding-left: 1rem;
+  margin-top: 1rem;
+}

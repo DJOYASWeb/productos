@@ -241,7 +241,13 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    cotizaciones.push({ cliente, correo, fecha, total });
+cotizaciones.push({
+  cliente,
+  correo,
+  fecha,
+  total,
+  productos: [...productosSeleccionados]
+});
 
     clienteInput.value = "";
     correoInput.value = "";
@@ -271,4 +277,36 @@ document.addEventListener('DOMContentLoaded', () => {
       tablaCotizacionesBody.appendChild(tr);
     });
   }
+
+// Mostrar detalle al hacer clic en una fila
+tablaCotizacionesBody.addEventListener('click', (e) => {
+  const fila = e.target.closest('tr');
+  if (!fila) return;
+
+  const index = Array.from(tablaCotizacionesBody.children).indexOf(fila);
+  const cot = cotizaciones[index];
+
+  document.getElementById('detalleCliente').textContent = cot.cliente;
+  document.getElementById('detalleCorreo').textContent = cot.correo;
+  document.getElementById('detalleFecha').textContent = cot.fecha;
+  document.getElementById('detalleTotal').textContent = cot.total.toFixed(0);
+
+  const ul = document.getElementById('detalleProductos');
+  ul.innerHTML = "";
+
+  cot.productos.forEach(p => {
+    const li = document.createElement('li');
+    li.innerHTML = `<strong>${p.nombre}</strong> (SKU: ${p.sku}) - Cantidad: ${p.cantidad} | Unitario: $${p.precio} | Total: $${(p.total).toFixed(0)}`;
+    ul.appendChild(li);
+  });
+
+  document.getElementById('detalleCotizacion').classList.remove('hidden');
+});
+
+// Botón para cerrar el detalle
+document.getElementById('cerrarDetalleBtn').addEventListener('click', () => {
+  document.getElementById('detalleCotizacion').classList.add('hidden');
+});
+
+
 });
