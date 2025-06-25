@@ -138,3 +138,33 @@ buscador.addEventListener("keypress", e => {
 });
 filtroCategoria.addEventListener("change", mostrarProductos);
 orden.addEventListener("change", mostrarProductos);
+
+// Mostrar productos al cargar
+document.addEventListener('DOMContentLoaded', () => {
+  fetch('productos_djoyas.json')
+    .then(response => response.json())
+    .then(data => {
+      const container = document.getElementById('productos-container');
+      data.forEach(producto => {
+        const div = document.createElement('div');
+        div.innerHTML = `<strong>${producto.nombre}</strong> - ${producto.precio}`;
+        container.appendChild(div);
+      });
+    });
+
+  // Lógica de pestañas
+  const buttons = document.querySelectorAll('.tab-button');
+  const sections = document.querySelectorAll('.tab-section');
+
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      const target = button.getAttribute('data-tab');
+      
+      sections.forEach(section => {
+        section.classList.remove('active');
+      });
+
+      document.getElementById(target).classList.add('active');
+    });
+  });
+});
