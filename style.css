@@ -32,10 +32,11 @@ body {
   border: none;
   cursor: pointer;
   transition: background 0.3s;
+  text-align: left;
 }
 
 .sidebar button:hover {
-  background-color: #bbb;
+  background-color: #e9e9e9;
 }
 
 .main-content {
