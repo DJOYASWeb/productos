@@ -269,6 +269,138 @@ fetch('productos_djoyas.json')
   });
 
 
+let cotizaciones = [];
+let productosSeleccionados = [];
+
+const clienteInput = document.getElementById('cliente');
+const correoInput = document.getElementById('correo');
+const busquedaNombre = document.getElementById('busquedaNombre');
+const busquedaSKU = document.getElementById('busquedaSKU');
+const cantidadInput = document.getElementById('cantidadProducto');
+const listaProductosCotizacion = document.getElementById('listaProductosCotizacion');
+const totalCotizacionSpan = document.getElementById('totalCotizacion');
+const guardarCotizacionBtn = document.getElementById('guardarCotizacionBtn');
+const tablaCotizacionesBody = document.querySelector('#tablaCotizaciones tbody');
+
+// Botón Agregar Producto
+document.getElementById('agregarProductoBtn').addEventListener('click', () => {
+  const nombre = busquedaNombre.value.trim().toLowerCase();
+  const sku = busquedaSKU.value.trim().toLowerCase();
+  const cantidad = parseInt(cantidadInput.value, 10);
+
+  if (!nombre && !sku) return alert("Debes buscar por nombre o SKU");
+  if (!cantidad || cantidad <= 0) return alert("Cantidad inválida");
+
+  const producto = productos.find(p =>
+    (nombre && p.nombre?.toLowerCase().includes(nombre)) ||
+    (sku && p.sku?.toLowerCase().includes(sku))
+  );
+
+  if (!producto) return alert("Producto no encontrado");
+
+  const yaExiste = productosSeleccionados.find(p => p.sku === producto.sku);
+  if (yaExiste) return alert("Ya agregaste este producto");
+
+  const total = parseFloat(producto.precio) * cantidad;
+
+  productosSeleccionados.push({
+    nombre: producto.nombre,
+    sku: producto.sku,
+    precio: parseFloat(producto.precio),
+    cantidad,
+    total
+  });
+
+  actualizarVistaProductos();
+});
+
+function actualizarVistaProductos() {
+  listaProductosCotizacion.innerHTML = "";
+
+  productosSeleccionados.forEach((p, index) => {
+    const div = document.createElement('div');
+    div.className = "preview-producto";
+    div.innerHTML = `
+      <strong>${p.nombre}</strong> (SKU: ${p.sku})<br>
+      Cantidad: <input type="number" min="1" value="${p.cantidad}" data-index="${index}" class="editar-cantidad" />
+      | Unitario: $${p.precio} | Total: $${(p.precio * p.cantidad).toFixed(0)}
+      <button data-index="${index}" class="eliminar-producto">❌</button>
+    `;
+    listaProductosCotizacion.appendChild(div);
+  });
+
+  calcularTotal();
+}
+
+// Editar cantidad
+listaProductosCotizacion.addEventListener('input', e => {
+  if (e.target.classList.contains('editar-cantidad')) {
+    const index = e.target.dataset.index;
+    const nuevaCantidad = parseInt(e.target.value, 10);
+    if (nuevaCantidad > 0) {
+      productosSeleccionados[index].cantidad = nuevaCantidad;
+      productosSeleccionados[index].total = productosSeleccionados[index].precio * nuevaCantidad;
+      actualizarVistaProductos();
+    }
+  }
+});
+
+// Eliminar producto
+listaProductosCotizacion.addEventListener('click', e => {
+  if (e.target.classList.contains('eliminar-producto')) {
+    const index = e.target.dataset.index;
+    productosSeleccionados.splice(index, 1);
+    actualizarVistaProductos();
+  }
+});
+
+function calcularTotal() {
+  const total = productosSeleccionados.reduce((sum, p) => sum + p.total, 0);
+  totalCotizacionSpan.textContent = total.toFixed(0);
+}
+
+// Guardar cotización
+guardarCotizacionBtn.addEventListener('click', () => {
+  const cliente = clienteInput.value.trim();
+  const correo = correoInput.value.trim();
+  const fecha = new Date().toLocaleDateString();
+  const total = productosSeleccionados.reduce((sum, p) => sum + p.total, 0);
+
+  if (!cliente || !correo || productosSeleccionados.length === 0) {
+    alert("Completa todos los campos y agrega al menos un producto.");
+    return;
+  }
+
+  cotizaciones.push({ cliente, correo, fecha, total });
+
+  clienteInput.value = "";
+  correoInput.value = "";
+  busquedaNombre.value = "";
+  busquedaSKU.value = "";
+  productosSeleccionados = [];
+  actualizarVistaProductos();
+
+  document.getElementById('formCotizacion').classList.add('hidden');
+  document.getElementById('tablaCotizaciones').classList.remove('hidden');
+  document.getElementById('nuevaCotizacionBtn').classList.remove('hidden');
+  document.getElementById('volverBtn').classList.add('hidden');
+
+  renderizarCotizaciones();
+});
+
+function renderizarCotizaciones() {
+  tablaCotizacionesBody.innerHTML = "";
+  cotizaciones.forEach(c => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${c.cliente}</td>
+      <td>${c.correo}</td>
+      <td>${c.fecha}</td>
+      <td>$${c.total.toFixed(0)}</td>
+    `;
+    tablaCotizacionesBody.appendChild(tr);
+  });
+}
 
 
 
