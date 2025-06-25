@@ -178,3 +178,14 @@ background: #e5e5e5;
   opacity: 1;
   transform: translateY(0);
 }
+
+.tab-button{
+    color: #323232;
+    background: none;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.tab-button:hover{
+    background: #dbdbdb;
+}
