@@ -1,48 +1,38 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Galería de Productos DJOYAS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gestión de Productos</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Listado de Productos DJOYAS</h1>
-  <div class="controls">
-    <input class="buscador" type="text" id="buscador" placeholder="Buscar por SKU..." />
-    <button id="botonBuscar">Buscar</button>
+  <div class="container">
+    <aside class="sidebar">
+      <h2>Menú</h2>
+      <ul>
+        <li><button class="tab-button" data-tab="productos">Productos</button></li>
+        <li><button class="tab-button" data-tab="transportistas">Transportistas</button></li>
+        <li><button class="tab-button" data-tab="cotizaciones">Cotizaciones</button></li>
+      </ul>
+    </aside>
 
+    <main class="main-content">
+      <section id="productos" class="tab-section active">
+        <h1>Productos</h1>
+        <div id="productos-container"></div>
+      </section>
 
-  </div>
+      <section id="transportistas" class="tab-section">
+        <h1>Transportistas</h1>
+        <p>Contenido relacionado con los transportistas irá aquí.</p>
+      </section>
 
-  <div class="filtros">
-   <select id="orden">
-      <option value="nombre">Ordenar por nombre</option>
-      <option value="id">Ordenar por ID</option>
-    </select>
-  <select id="filtroCategoria"></select>
-  </div>
-  <div class="grid" id="contenedorProductos"></div>
-
-  <div id="modal" class="modal hidden">
-
-    <div class="modal-content">
-      <h2 id="modalNombre"></h2><hr>
-      <div class="division">
-      <div class="izquierda">      <img id="modalImagen" src="" alt=""></div>
-      <div class="derecha">     
-          <p><strong>ID:</strong> <span id="modalID"></span></p>   
-       <p><strong>SKU:</strong> <span id="modalSKU"></span></p>
-      <p><strong>Categoría:</strong> <span id="modalCategoria"></span></p>
-      <p><strong>Resumen:</strong> <span id="modalResumen"></span></p>
-      <p><strong>Características:</strong> <span id="modalCaracteristicas"></span></p>
-    </div>
-      <span id="cerrarModal" class="cerrar">&times;</span>
-      </div>
-
-
-    </div>
+      <section id="cotizaciones" class="tab-section">
+        <h1>Cotizaciones</h1>
+        <p>Contenido de cotizaciones irá aquí.</p>
+      </section>
+    </main>
   </div>
 
   <script src="script.js"></script>
