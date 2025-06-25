@@ -188,3 +188,26 @@ background: #e5e5e5;
 .tab-button:hover{
     background: #dbdbdb;
 }
+
+.hidden {
+  display: none;
+}
+
+#cotizacionForm {
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+  gap: 10px;
+}
+
+#tablaCotizaciones {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+#tablaCotizaciones th, #tablaCotizaciones td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
