@@ -46,20 +46,35 @@
   <h1>Cotizaciones</h1>
 
   <button id="nuevaCotizacionBtn">➕ Nueva Cotización</button>
-<button id="volverBtn" class="hidden">⬅ Atrás</button>
+  <button id="volverBtn" class="hidden">⬅ Atrás</button>
+
+  <!-- Formulario dinámico de cotización -->
   <div id="formCotizacion" class="hidden">
     <h3>Crear Cotización</h3>
-    <form id="cotizacionForm">
-      <label for="productoSelect">Producto:</label>
-      <select id="productoSelect"></select>
 
-      <label for="cantidad">Cantidad:</label>
-      <input type="number" id="cantidad" min="1" value="1">
+    <div id="formCliente">
+      <label for="cliente">Nombre del Cliente:</label>
+      <input type="text" id="cliente" required>
 
-      <p><strong>Precio Total:</strong> $<span id="precioTotal">0</span></p>
+      <label for="correo">Correo Electrónico:</label>
+      <input type="email" id="correo" required>
+    </div>
 
-      <button type="submit">Guardar Cotización</button>
-    </form>
+    <hr>
+
+    <h4>Agregar Productos</h4>
+    <div id="productoForm">
+      <input type="text" id="busquedaNombre" placeholder="Buscar por nombre...">
+      <input type="text" id="busquedaSKU" placeholder="Buscar por SKU...">
+      <input type="number" id="cantidadProducto" min="1" value="1" placeholder="Cantidad">
+      <button type="button" id="agregarProductoBtn">Agregar Producto</button>
+    </div>
+
+    <div id="listaProductosCotizacion"></div>
+
+    <p><strong>Total Cotización:</strong> $<span id="totalCotizacion">0</span></p>
+
+    <button type="button" id="guardarCotizacionBtn">Guardar Cotización</button>
   </div>
 
   <hr>
@@ -70,13 +85,11 @@
       <tr>
         <th>Cliente</th>
         <th>Correo</th>
-        <th>Fecha Cotizacion</th>
+        <th>Fecha</th>
         <th>Total</th>
       </tr>
     </thead>
-    <tbody>
-      <!-- Cotizaciones insertadas dinámicamente -->
-    </tbody>
+    <tbody></tbody>
   </table>
 </section>
 
