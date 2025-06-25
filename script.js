@@ -167,10 +167,25 @@ const productoSelect = document.getElementById('productoSelect');
 const cantidadInput = document.getElementById('cantidad');
 const precioTotalSpan = document.getElementById('precioTotal');
 const tablaCotizacionesBody = document.querySelector('#tablaCotizaciones tbody');
+const volverBtn = document.getElementById('volverBtn');
+const tablaCotizaciones = document.getElementById('tablaCotizaciones');
 
-// Mostrar/ocultar formulario
+
+
+// Mostrar formulario y ocultar tabla
 nuevaCotizacionBtn.addEventListener('click', () => {
-  cotizacionFormDiv.classList.toggle('hidden');
+  cotizacionFormDiv.classList.remove('hidden');
+  tablaCotizaciones.classList.add('hidden');
+  nuevaCotizacionBtn.classList.add('hidden');
+  volverBtn.classList.remove('hidden');
+});
+
+// Volver al historial
+volverBtn.addEventListener('click', () => {
+  cotizacionFormDiv.classList.add('hidden');
+  tablaCotizaciones.classList.remove('hidden');
+  nuevaCotizacionBtn.classList.remove('hidden');
+  volverBtn.classList.add('hidden');
 });
 
 // Actualizar total al cambiar producto o cantidad
