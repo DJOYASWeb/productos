@@ -308,5 +308,49 @@ document.getElementById('cerrarDetalleBtn').addEventListener('click', () => {
   document.getElementById('detalleCotizacion').classList.add('hidden');
 });
 
+// Mostrar detalle de cotización
+tablaCotizacionesBody.addEventListener('click', (e) => {
+  const fila = e.target.closest('tr');
+  if (!fila) return;
+
+  const index = Array.from(tablaCotizacionesBody.children).indexOf(fila);
+  const cot = cotizaciones[index];
+
+  document.getElementById('detalleCliente').textContent = cot.cliente;
+  document.getElementById('detalleCorreo').textContent = cot.correo;
+  document.getElementById('detalleFecha').textContent = cot.fecha;
+  document.getElementById('detalleTotal').textContent = cot.total.toFixed(0);
+
+  const ul = document.getElementById('detalleProductos');
+  ul.innerHTML = "";
+  cot.productos.forEach(p => {
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <strong>${p.nombre}</strong> (SKU: ${p.sku})<br>
+      Cantidad: ${p.cantidad} | Unitario: $${p.precio} | Total: $${(p.total).toFixed(0)}
+    `;
+    ul.appendChild(li);
+  });
+
+  // Mostrar pantalla de detalle, ocultar historial
+  document.querySelector('#cotizaciones').classList.remove('active');
+  document.querySelector('#detalleCotizacion').classList.add('active');
+});
+
+// Botón volver
+document.getElementById('volverHistorialBtn').addEventListener('click', () => {
+  document.querySelector('#detalleCotizacion').classList.remove('active');
+  document.querySelector('#cotizaciones').classList.add('active');
+});
+
+// Imprimir cotización
+document.getElementById('imprimirCotizacionBtn').addEventListener('click', () => {
+  window.print();
+});
+
+
+
+
+
 
 });

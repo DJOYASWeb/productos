@@ -299,3 +299,58 @@ background: #e5e5e5;
   padding-left: 1rem;
   margin-top: 1rem;
 }
+
+#detalleCotizacion {
+  padding: 2rem;
+  background: #ffffff;
+}
+
+.cotizacion-ficha {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 700px;
+  margin: 0 auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+#detalleCotizacion ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+#detalleCotizacion li {
+  margin-bottom: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #efefef;
+}
+
+#printBtn {
+  background: #333;
+  color: white;
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #detalleCotizacion, #detalleCotizacion * {
+    visibility: visible;
+  }
+
+  #volverHistorialBtn, #imprimirCotizacionBtn {
+    display: none;
+  }
+
+  #detalleCotizacion {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+  }
+}
