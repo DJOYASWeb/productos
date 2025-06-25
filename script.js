@@ -202,7 +202,7 @@ function actualizarPrecioTotal() {
   }
 }
 
-productoSelect.addEventListener('change', actualizarPrecioTotal);
+// productoSelect.addEventListener('change', actualizarPrecioTotal);
 cantidadInput.addEventListener('input', actualizarPrecioTotal);
 
 // Guardar cotización
