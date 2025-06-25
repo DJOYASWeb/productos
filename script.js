@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const botonBuscar = document.getElementById('botonBuscar');
   const filtroCategoria = document.getElementById('filtroCategoria');
   const orden = document.getElementById('orden');
-
+  const cantidadInput = document.getElementById('cantidadProducto');
   const modal = document.getElementById('modal');
   const cerrarModal = document.getElementById('cerrarModal');
   const modalNombre = document.getElementById('modalNombre');
@@ -263,7 +263,7 @@ const clienteInput = document.getElementById('cliente');
 const correoInput = document.getElementById('correo');
 const busquedaNombre = document.getElementById('busquedaNombre');
 const busquedaSKU = document.getElementById('busquedaSKU');
-const cantidadInput = document.getElementById('cantidadProducto');
+
 const listaProductosCotizacion = document.getElementById('listaProductosCotizacion');
 const totalCotizacionSpan = document.getElementById('totalCotizacion');
 const guardarCotizacionBtn = document.getElementById('guardarCotizacionBtn');
