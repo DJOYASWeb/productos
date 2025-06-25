@@ -270,3 +270,19 @@ background: #e5e5e5;
 #tablaCotizaciones td {
   background-color: #fff;
 }
+
+#volverBtn {
+  background-color: #e5e5ea;
+  color: #333;
+  border-radius: 12px;
+  font-size: 1rem;
+  padding: 0.5rem 1.25rem;
+  border: none;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#volverBtn:hover {
+  background-color: #d0d0d0;
+}
