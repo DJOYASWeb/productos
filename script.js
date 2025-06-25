@@ -156,4 +156,112 @@ document.addEventListener('DOMContentLoaded', () => {
       if (selectedSection) selectedSection.classList.add('active');
     });
   });
+
+// === Cotizaciones ===
+let cotizaciones = [];
+
+const cotizacionFormDiv = document.getElementById('formCotizacion');
+const cotizacionForm = document.getElementById('cotizacionForm');
+const nuevaCotizacionBtn = document.getElementById('nuevaCotizacionBtn');
+const productoSelect = document.getElementById('productoSelect');
+const cantidadInput = document.getElementById('cantidad');
+const precioTotalSpan = document.getElementById('precioTotal');
+const tablaCotizacionesBody = document.querySelector('#tablaCotizaciones tbody');
+
+// Mostrar/ocultar formulario
+nuevaCotizacionBtn.addEventListener('click', () => {
+  cotizacionFormDiv.classList.toggle('hidden');
+});
+
+// Actualizar total al cambiar producto o cantidad
+function actualizarPrecioTotal() {
+  const productoId = productoSelect.value;
+  const cantidad = parseInt(cantidadInput.value, 10);
+
+  const producto = productos.find(p => p.id == productoId);
+  if (producto && producto.precio) {
+    const total = parseFloat(producto.precio) * cantidad;
+    precioTotalSpan.textContent = total.toFixed(2);
+  } else {
+    precioTotalSpan.textContent = "0";
+  }
+}
+
+productoSelect.addEventListener('change', actualizarPrecioTotal);
+cantidadInput.addEventListener('input', actualizarPrecioTotal);
+
+// Guardar cotización
+cotizacionForm.addEventListener('submit', e => {
+  e.preventDefault();
+
+  const productoId = productoSelect.value;
+  const cantidad = parseInt(cantidadInput.value, 10);
+  const producto = productos.find(p => p.id == productoId);
+
+  if (!producto || isNaN(cantidad) || cantidad <= 0) {
+    alert("Datos inválidos");
+    return;
+  }
+
+  const total = parseFloat(producto.precio) * cantidad;
+
+  cotizaciones.push({
+    nombre: producto.nombre,
+    cantidad,
+    total: total.toFixed(2)
+  });
+
+  cotizacionForm.reset();
+  precioTotalSpan.textContent = "0";
+  cotizacionFormDiv.classList.add('hidden');
+
+  renderizarCotizaciones();
+});
+
+// Mostrar cotizaciones en tabla
+function renderizarCotizaciones() {
+  tablaCotizacionesBody.innerHTML = "";
+  cotizaciones.forEach(c => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${c.nombre}</td>
+      <td>${c.cantidad}</td>
+      <td>$${c.total}</td>
+    `;
+    tablaCotizacionesBody.appendChild(tr);
+  });
+}
+
+// Cargar productos al dropdown
+function cargarProductosEnCotizador() {
+  if (!productoSelect) return;
+
+  productoSelect.innerHTML = productos.map(p =>
+    `<option value="${p.id}">${p.nombre} - $${p.precio}</option>`
+  ).join("");
+
+  actualizarPrecioTotal(); // Calcular precio al cargar
+}
+
+// Llamar cuando se carguen los productos
+fetch('productos_djoyas.json')
+  .then(response => response.json())
+  .then(data => {
+    productos = data;
+    cargarCategorias();
+    mostrarInicio();
+    cargarProductosEnCotizador(); // Aquí
+  });
+
+
+
+
+
+
+
+
+
+
+
+
 });
