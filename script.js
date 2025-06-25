@@ -157,17 +157,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-// === Cotizaciones ===
-const cotizacionFormDiv = document.getElementById('formCotizacion');
-const cotizacionForm = document.getElementById('cotizacionForm');
-const nuevaCotizacionBtn = document.getElementById('nuevaCotizacionBtn');
-const productoSelect = document.getElementById('productoSelect');
-const cantidadInput = document.getElementById('cantidad');
-const precioTotalSpan = document.getElementById('precioTotal');
-const tablaCotizacionesBody = document.querySelector('#tablaCotizaciones tbody');
-const volverBtn = document.getElementById('volverBtn');
-const tablaCotizaciones = document.getElementById('tablaCotizaciones');
-
 
 
 // Mostrar formulario y ocultar tabla
