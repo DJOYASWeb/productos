@@ -94,7 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
     modalResumen.textContent = producto.resumen || "";
     modalCaracteristicas.textContent = producto.caracteristicas || "";
 
-    modalCaracteristicas.textContent = producto.caracteristicas || "";
     const imagenURL = producto.imagen || "";
     const copyHTML = `
       <p style="position: relative;">
@@ -304,10 +303,6 @@ tablaCotizacionesBody.addEventListener('click', (e) => {
   document.getElementById('detalleCotizacion').classList.remove('hidden');
 });
 
-// Botón para cerrar el detalle
-document.getElementById('cerrarDetalleBtn').addEventListener('click', () => {
-  document.getElementById('detalleCotizacion').classList.add('hidden');
-});
 
 // Mostrar detalle de cotización
 tablaCotizacionesBody.addEventListener('click', (e) => {
