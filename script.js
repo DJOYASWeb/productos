@@ -94,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     modalResumen.textContent = producto.resumen || "";
     modalCaracteristicas.textContent = producto.caracteristicas || "";
 
+    modalCaracteristicas.textContent = producto.caracteristicas || "";
     const imagenURL = producto.imagen || "";
     const copyHTML = `
       <p style="position: relative;">
