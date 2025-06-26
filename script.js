@@ -110,17 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.classList.remove('hidden');
   }
 
-  function copiarURL(texto, boton) {
-    navigator.clipboard.writeText(texto).then(() => {
-      const mensaje = boton.nextElementSibling;
-      mensaje.classList.remove('hidden');
-      mensaje.classList.add('visible');
-      setTimeout(() => {
-        mensaje.classList.remove('visible');
-        mensaje.classList.add('hidden');
-      }, 1500);
-    });
-  }
+
 
   cerrarModal.addEventListener("click", () => modal.classList.add('hidden'));
   window.addEventListener("click", e => {
@@ -313,3 +303,15 @@ document.addEventListener('DOMContentLoaded', () => {
     window.print();
   });
 });
+
+  function copiarURL(texto, boton) {
+    navigator.clipboard.writeText(texto).then(() => {
+      const mensaje = boton.nextElementSibling;
+      mensaje.classList.remove('hidden');
+      mensaje.classList.add('visible');
+      setTimeout(() => {
+        mensaje.classList.remove('visible');
+        mensaje.classList.add('hidden');
+      }, 1500);
+    });
+  }
