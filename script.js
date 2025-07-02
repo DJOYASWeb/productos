@@ -384,7 +384,7 @@ const producto = datosPDV.find(p => (p["Código"] || "").trim().toLowerCase() ==
   }
 
   const columnas = {
-    "Código Producto *": "Código ",
+    "Código Producto *": "Código",
     "Modelo Producto": "Modelo",
     "PrestaShop ID": "ID Producto",
     "Nombre Producto *": "Nombre Producto",
