@@ -444,7 +444,11 @@ const producto = datosPDV.find(p => (p["Código"] || "").trim().toLowerCase() ==
   contenedor.appendChild(tabla);
 }
 
-
+function mostrarTodosLosCodigos() {
+  const lista = datosPDV.map(p => p["Código"]).filter(c => c).join("\n");
+  console.log("Códigos cargados:", lista);
+  alert("Primeros códigos:\n" + lista.substring(0, 300));
+}
 
 
 // emei
