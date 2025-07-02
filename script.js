@@ -411,3 +411,5 @@ const producto = datosPDV.find(p => (p["Código "] || "").trim().toLowerCase() =
 
   contenedor.appendChild(tabla);
 }
+
+//ememe
