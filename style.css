@@ -417,3 +417,51 @@ background: #e5e5e5;
 .tabla-pdv button:hover {
   background-color: #c8c8c8;
 }
+
+#resultadoPDV {
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.tabla-pdv {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  border: 1px solid #ccc;
+}
+
+.tabla-pdv tr {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.tabla-pdv td {
+  padding: 10px 8px;
+  max-width: 240px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 42px;
+  vertical-align: middle;
+}
+
+.tabla-pdv td:first-child {
+  font-weight: 600;
+  color: #333;
+}
+
+.copiar-btn {
+  background: #f4f4f4;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.copiar-btn:hover {
+  background: #eaeaea;
+}
