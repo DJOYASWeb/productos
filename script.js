@@ -315,3 +315,95 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 1500);
     });
   }
+
+  let datosPDV = [];
+
+// Leer archivo
+document.getElementById("archivoExcel").addEventListener("change", function(e) {
+  const archivo = e.target.files[0];
+  if (!archivo) return;
+
+  Papa.parse(archivo, {
+    header: true,
+    skipEmptyLines: true,
+    complete: function(results) {
+      datosPDV = results.data;
+      document.getElementById("archivoCargado").textContent = `Archivo cargado: ${archivo.name}`;
+    }
+  });
+});
+
+// Buscar por código
+function buscarCodigo() {
+  const codigoBuscado = document.getElementById("buscadorPDV").value.trim();
+  const contenedor = document.getElementById("resultadoPDV");
+  contenedor.innerHTML = "";
+
+  if (!codigoBuscado || datosPDV.length === 0) return;
+
+  const producto = datosPDV.find(p => p["Código"] === codigoBuscado);
+
+  if (!producto) {
+    contenedor.innerHTML = "<p>No se encontró el producto.</p>";
+    return;
+  }
+
+  const columnas = {
+    "Código Producto *": "Código",
+    "Modelo Producto": "Modelo",
+    "PrestaShop ID": "ID Producto",
+    "Nombre Producto *": "Nombre Producto",
+    "Precio Tienda": "Precio Tienda Con IVA",
+    "Precio PrestaShop": "Precio WEB Con IVA",
+    "Material": "Plata",
+    "Tipo *": "CATEG. PRINCIPAL",
+    "Subtipo": "SUBCATEGORIA",
+    "Combinación": "Combinaciones",
+    "Dimensión": "Dimensión",
+    "Peso (gr)": "Peso",
+    "Descripción Resumen": "Resumen",
+    "Estilo": "Estilo",
+    "Descripción Extensa": "Descripción",
+    "Caja": "Caja",
+    "Número Bolsa": "Código De Bolsa",
+    "Cantidad Original": "INGRESO BODEGA",
+    "Cantidad Ideal": "",
+    "Cantidad Crítica": "",
+    "Foto Link Individual": "URL de Producto"
+  };
+
+  const tabla = document.createElement("table");
+  tabla.classList.add("tabla-pdv");
+
+  for (const [htmlLabel, campo] of Object.entries(columnas)) {
+    const fila = document.createElement("tr");
+    const celda1 = document.createElement("td");
+    const celda2 = document.createElement("td");
+    const celda3 = document.createElement("td");
+
+    celda1.textContent = htmlLabel;
+
+    let valor = "";
+    if (campo === "Plata") valor = "Plata"; // Valor fijo
+    else if (campo === "") valor = ""; // vacíos como Ideal/Crítica
+    else valor = producto[campo] || "";
+
+    celda2.textContent = valor;
+
+    const btnCopiar = document.createElement("button");
+    btnCopiar.textContent = "Copiar";
+    btnCopiar.onclick = () => {
+      navigator.clipboard.writeText(valor);
+      btnCopiar.textContent = "Copiado!";
+      setTimeout(() => btnCopiar.textContent = "Copiar", 1000);
+    };
+    celda3.appendChild(btnCopiar);
+
+    fila.appendChild(celda1);
+    fila.appendChild(celda2);
+    fila.appendChild(celda3);
+    tabla.appendChild(fila);
+  }
+
+  contenedor.appendChild(tabla);
+}
