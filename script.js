@@ -372,10 +372,6 @@ function buscarCodigo() {
   const codigoBuscado = document.getElementById("buscadorPDV").value.trim().toLowerCase();
   const contenedor = document.getElementById("resultadoPDV");
   contenedor.innerHTML = "";
-console.log("🔎 Código buscado:", codigoBuscado);
-console.log("📦 Primer producto:", datosPDV[0]);
-console.log("🆔 Código en primer producto:", String(datosPDV[0]["Código"] || "").trim().toLowerCase());
-
   if (!codigoBuscado || datosPDV.length === 0) return;
 
 const producto = datosPDV.find(p => (p["Código"] || "").trim().toLowerCase() === codigoBuscado);
@@ -449,8 +445,7 @@ const producto = datosPDV.find(p => (p["Código"] || "").trim().toLowerCase() ==
 
 function mostrarTodosLosCodigos() {
   const lista = datosPDV.map(p => p["Código"]).filter(c => c).join("\n");
-  console.log("Códigos cargados:", lista);
-  alert("Primeros códigos:\n" + lista.substring(0, 300));
+   alert("Primeros códigos:\n" + lista.substring(0, 300));
 }
 
 
