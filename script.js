@@ -316,35 +316,66 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
- let datosPDV = [];
 
-// Cargar archivo Excel (empezando desde fila 3)
-document.getElementById("archivoExcel").addEventListener("change", function(e) {
+
+
+
+
+
+
+// ----------------------
+// CARGA DE ARCHIVO EXCEL (.xlsx)
+// ----------------------
+
+let datosPDV = [];
+
+document.getElementById("archivoExcel").addEventListener("change", function (e) {
   const archivo = e.target.files[0];
   if (!archivo) return;
 
-  Papa.parse(archivo, {
-    header: true,
-    skipEmptyLines: true,
-    complete: function(results) {
-      const todasLasFilas = results.data;
-      datosPDV = todasLasFilas.slice(2); // Fila 3 en adelante
-       console.log("Datos cargados:", datosPDV); // <- Agregado
-      document.getElementById("archivoCargado").textContent = `Archivo cargado: ${archivo.name}`;
-    }
-  });
+  const lector = new FileReader();
+  lector.onload = function (event) {
+    const data = new Uint8Array(event.target.result);
+    const workbook = XLSX.read(data, { type: "array" });
+
+    const nombreHoja = workbook.SheetNames[0];
+    const hoja = workbook.Sheets[nombreHoja];
+
+    // Leer como array desde la hoja (sin interpretar encabezados)
+    const opciones = { header: 1, defval: "" };
+    const datosCrudos = XLSX.utils.sheet_to_json(hoja, opciones);
+
+    // Fila 3 = índice 2 (encabezados), datos desde fila 4 en adelante
+    const encabezados = datosCrudos[2];
+    const filas = datosCrudos.slice(3);
+
+    datosPDV = filas.map(fila => {
+      const obj = {};
+      encabezados.forEach((col, i) => {
+        obj[col.trim()] = fila[i] || "";
+      });
+      return obj;
+    });
+
+    document.getElementById("archivoCargado").textContent = `Archivo cargado: ${archivo.name}`;
+    console.log("Datos cargados:", datosPDV);
+  };
+
+  lector.readAsArrayBuffer(archivo);
 });
 
-// Buscar por código y mostrar resultados
+// ----------------------
+// BÚSQUEDA POR CÓDIGO
+// ----------------------
+
 function buscarCodigo() {
-const codigoBuscado = document.getElementById("buscadorPDV").value.trim().toLowerCase();
+  const codigoBuscado = document.getElementById("buscadorPDV").value.trim().toLowerCase();
   const contenedor = document.getElementById("resultadoPDV");
   contenedor.innerHTML = "";
 
   if (!codigoBuscado || datosPDV.length === 0) return;
 
-const producto = datosPDV.find(p => (p["Código "] || "").trim().toLowerCase() === codigoBuscado);
-
+  const producto = datosPDV.find(p => (p["Código "] || "").trim().toLowerCase() === codigoBuscado);
 
   if (!producto) {
     contenedor.innerHTML = "<p style='padding:10px; color:#555;'>No se encontró el producto.</p>";
@@ -387,9 +418,8 @@ const producto = datosPDV.find(p => (p["Código "] || "").trim().toLowerCase() =
     celda1.textContent = etiqueta;
 
     let valor = "";
-    if (campo === "Plata") valor = "Plata"; // valor fijo
-    else if (campo === "") valor = ""; // campos vacíos
-    else valor = producto[campo] || "";
+    if (campo === "") valor = "";
+    else valor = (producto[campo] || "").toString().trim();
 
     celda2.textContent = valor;
 
@@ -413,10 +443,7 @@ const producto = datosPDV.find(p => (p["Código "] || "").trim().toLowerCase() =
   contenedor.appendChild(tabla);
 }
 
-function mostrarTodosLosCodigos() {
-  const debug = document.getElementById("debugCodigos");
-  debug.innerHTML = datosPDV.map(p => p["Código "] || "sin código").join("<br>");
-}
 
 
-// doss
+
+// emei
