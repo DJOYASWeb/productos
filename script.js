@@ -375,7 +375,8 @@ function buscarCodigo() {
 
   if (!codigoBuscado || datosPDV.length === 0) return;
 
-  const producto = datosPDV.find(p => (p["Código "] || "").trim().toLowerCase() === codigoBuscado);
+const producto = datosPDV.find(p => (p["Código"] || "").trim().toLowerCase() === codigoBuscado);
+
 
   if (!producto) {
     contenedor.innerHTML = "<p style='padding:10px; color:#555;'>No se encontró el producto.</p>";
