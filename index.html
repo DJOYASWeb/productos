@@ -38,11 +38,21 @@
   <div class="grid" id="contenedorProductos"></div>
       </section>
 
-            <section id="pdv" class="tab-section ">
+<section id="pdv" class="tab-section">
   <h1>Carga de atributos PDV</h1>
 
+  <!-- Subida de archivo -->
+  <input type="file" id="archivoExcel" accept=".xlsx, .csv" />
+  <p id="archivoCargado" style="font-style: italic;"></p>
 
-      </section>
+  <!-- Buscador -->
+  <input type="text" id="buscadorPDV" placeholder="Buscar por código..." />
+  <button onclick="buscarCodigo()">Buscar</button>
+
+  <!-- Resultado -->
+  <div id="resultadoPDV"></div>
+</section>
+
 
 <section id="cotizaciones" class="tab-section">
   <h1>Cotizaciones</h1>
