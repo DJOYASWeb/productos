@@ -329,6 +329,7 @@ document.getElementById("archivoExcel").addEventListener("change", function(e) {
     complete: function(results) {
       const todasLasFilas = results.data;
       datosPDV = todasLasFilas.slice(2); // Fila 3 en adelante
+       console.log("Datos cargados:", datosPDV); // <- Agregado
       document.getElementById("archivoCargado").textContent = `Archivo cargado: ${archivo.name}`;
     }
   });
