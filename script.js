@@ -336,13 +336,13 @@ document.getElementById("archivoExcel").addEventListener("change", function(e) {
 
 // Buscar por código y mostrar resultados
 function buscarCodigo() {
-  const codigoBuscado = document.getElementById("buscadorPDV").value.trim();
+const codigoBuscado = document.getElementById("buscadorPDV").value.trim().toLowerCase();
   const contenedor = document.getElementById("resultadoPDV");
   contenedor.innerHTML = "";
 
   if (!codigoBuscado || datosPDV.length === 0) return;
 
-const producto = datosPDV.find(p => (p["Código "] || "").trim() === codigoBuscado);
+const producto = datosPDV.find(p => (p["Código "] || "").trim().toLowerCase() === codigoBuscado);
 
 
   if (!producto) {
