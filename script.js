@@ -372,6 +372,9 @@ function buscarCodigo() {
   const codigoBuscado = document.getElementById("buscadorPDV").value.trim().toLowerCase();
   const contenedor = document.getElementById("resultadoPDV");
   contenedor.innerHTML = "";
+console.log("🔎 Código buscado:", codigoBuscado);
+console.log("📦 Primer producto:", datosPDV[0]);
+console.log("🆔 Código en primer producto:", String(datosPDV[0]["Código"] || "").trim().toLowerCase());
 
   if (!codigoBuscado || datosPDV.length === 0) return;
 
@@ -451,4 +454,4 @@ function mostrarTodosLosCodigos() {
 }
 
 
-// emei
+// poye
