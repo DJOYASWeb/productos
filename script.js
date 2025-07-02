@@ -413,4 +413,10 @@ const producto = datosPDV.find(p => (p["Código "] || "").trim().toLowerCase() =
   contenedor.appendChild(tabla);
 }
 
+function mostrarTodosLosCodigos() {
+  const debug = document.getElementById("debugCodigos");
+  debug.innerHTML = datosPDV.map(p => p["Código "] || "sin código").join("<br>");
+}
+
+
 //miy
