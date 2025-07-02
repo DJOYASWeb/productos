@@ -316,9 +316,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  let datosPDV = [];
+ let datosPDV = [];
 
-// Leer archivo
+// Cargar archivo Excel (empezando desde fila 3)
 document.getElementById("archivoExcel").addEventListener("change", function(e) {
   const archivo = e.target.files[0];
   if (!archivo) return;
@@ -327,13 +327,14 @@ document.getElementById("archivoExcel").addEventListener("change", function(e) {
     header: true,
     skipEmptyLines: true,
     complete: function(results) {
-      datosPDV = results.data;
+      const todasLasFilas = results.data;
+      datosPDV = todasLasFilas.slice(2); // Fila 3 en adelante
       document.getElementById("archivoCargado").textContent = `Archivo cargado: ${archivo.name}`;
     }
   });
 });
 
-// Buscar por código
+// Buscar por código y mostrar resultados
 function buscarCodigo() {
   const codigoBuscado = document.getElementById("buscadorPDV").value.trim();
   const contenedor = document.getElementById("resultadoPDV");
@@ -341,21 +342,21 @@ function buscarCodigo() {
 
   if (!codigoBuscado || datosPDV.length === 0) return;
 
-  const producto = datosPDV.find(p => p["Código"] === codigoBuscado);
+  const producto = datosPDV.find(p => p["Código "] === codigoBuscado);
 
   if (!producto) {
-    contenedor.innerHTML = "<p>No se encontró el producto.</p>";
+    contenedor.innerHTML = "<p style='padding:10px; color:#555;'>No se encontró el producto.</p>";
     return;
   }
 
   const columnas = {
-    "Código Producto *": "Código",
+    "Código Producto *": "Código ",
     "Modelo Producto": "Modelo",
     "PrestaShop ID": "ID Producto",
     "Nombre Producto *": "Nombre Producto",
     "Precio Tienda": "Precio Tienda Con IVA",
     "Precio PrestaShop": "Precio WEB Con IVA",
-    "Material": "Plata",
+    "Material": "Material",
     "Tipo *": "CATEG. PRINCIPAL",
     "Subtipo": "SUBCATEGORIA",
     "Combinación": "Combinaciones",
@@ -375,28 +376,30 @@ function buscarCodigo() {
   const tabla = document.createElement("table");
   tabla.classList.add("tabla-pdv");
 
-  for (const [htmlLabel, campo] of Object.entries(columnas)) {
+  for (const [etiqueta, campo] of Object.entries(columnas)) {
     const fila = document.createElement("tr");
     const celda1 = document.createElement("td");
     const celda2 = document.createElement("td");
     const celda3 = document.createElement("td");
 
-    celda1.textContent = htmlLabel;
+    celda1.textContent = etiqueta;
 
     let valor = "";
-    if (campo === "Plata") valor = "Plata"; // Valor fijo
-    else if (campo === "") valor = ""; // vacíos como Ideal/Crítica
+    if (campo === "Plata") valor = "Plata"; // valor fijo
+    else if (campo === "") valor = ""; // campos vacíos
     else valor = producto[campo] || "";
 
     celda2.textContent = valor;
 
     const btnCopiar = document.createElement("button");
     btnCopiar.textContent = "Copiar";
+    btnCopiar.className = "copiar-btn";
     btnCopiar.onclick = () => {
       navigator.clipboard.writeText(valor);
       btnCopiar.textContent = "Copiado!";
       setTimeout(() => btnCopiar.textContent = "Copiar", 1000);
     };
+
     celda3.appendChild(btnCopiar);
 
     fila.appendChild(celda1);
