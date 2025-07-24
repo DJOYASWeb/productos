@@ -452,11 +452,10 @@ function mostrarTodosLosCodigos() {
 // fin web
 
 
-
-
 function procesarCSV() {
   const fileInput = document.getElementById('csvFile');
   const file = fileInput.files[0];
+
   if (!file) {
     alert("Por favor selecciona un archivo CSV.");
     return;
@@ -465,18 +464,28 @@ function procesarCSV() {
   const reader = new FileReader();
   reader.onload = function (e) {
     const lines = e.target.result.split('\n').filter(line => line.trim() !== '');
-    const headers = lines[0].split(',');
+    if (lines.length < 2) {
+      alert("El archivo CSV no tiene datos suficientes.");
+      return;
+    }
+
+    const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
     const idIndex = headers.indexOf('ID');
     const nombreIndex = headers.indexOf('Nombre');
     const resumenIndex = headers.indexOf('Resumen');
 
+    if (idIndex === -1 || nombreIndex === -1 || resumenIndex === -1) {
+      alert("El archivo debe tener las columnas: ID, Nombre, Resumen.");
+      return;
+    }
+
     const resultados = [];
 
     for (let i = 1; i < lines.length; i++) {
-      const row = lines[i].split(',');
-      const id = row[idIndex];
-      const nombre = row[nombreIndex];
-      const resumen = row[resumenIndex];
+      const row = parseCSVLine(lines[i]);
+      const id = row[idIndex] || '';
+      const nombre = row[nombreIndex] || '';
+      const resumen = row[resumenIndex] || '';
 
       const peso = extraerPeso(resumen);
       const tamanos = extraerTamanos(resumen);
@@ -493,12 +502,39 @@ function procesarCSV() {
   reader.readAsText(file);
 }
 
+function parseCSVLine(line) {
+  const values = [];
+  let current = '';
+  let inQuotes = false;
+
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    const nextChar = line[i + 1];
+
+    if (char === '"' && inQuotes && nextChar === '"') {
+      current += '"';
+      i++; // skip next quote
+    } else if (char === '"') {
+      inQuotes = !inQuotes;
+    } else if (char === ',' && !inQuotes) {
+      values.push(current.trim());
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+  values.push(current.trim());
+  return values;
+}
+
 function extraerPeso(texto) {
+  if (!texto || typeof texto !== 'string') return null;
   const match = texto.match(/Peso\s*([\d.,]+)\s*grs/i);
   return match ? match[1] + ' grs' : null;
 }
 
 function extraerTamanos(texto) {
+  if (!texto || typeof texto !== 'string') return [];
   const matches = [...texto.matchAll(/Tamaño\s*([\d.,]+)\s*cm/i)];
   return matches.map(m => m[1] + ' cm');
 }
@@ -520,11 +556,14 @@ function mostrarResultados(data) {
   });
 
   table.style.display = 'table';
-  window.resultadosProcesados = data; // Guardar para exportar luego
+  window.resultadosProcesados = data;
 }
 
 function exportarCSV() {
-  if (!window.resultadosProcesados) return;
+  if (!window.resultadosProcesados || window.resultadosProcesados.length === 0) {
+    alert("No hay datos para exportar.");
+    return;
+  }
 
   const encabezados = "ID,Nombre,Características,Extradatos\n";
   const filas = window.resultadosProcesados.map(row =>
@@ -538,9 +577,9 @@ function exportarCSV() {
   a.href = url;
   a.download = "resultados_procesados.csv";
   a.click();
-
   URL.revokeObjectURL(url);
 }
 
 
-//v1
+
+//v1.2
