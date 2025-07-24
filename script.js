@@ -535,7 +535,7 @@ function extraerPeso(texto) {
 
 function extraerTamanos(texto) {
   if (!texto || typeof texto !== 'string') return [];
-  const matches = [...texto.matchAll(/Tamaño\s*([\d.,]+)\s*cm/i)];
+  const matches = [...texto.matchAll(/Tamaño\s*([\d.,]+)\s*cm/gi)];
   return matches.map(m => m[1] + ' cm');
 }
 
@@ -582,4 +582,4 @@ function exportarCSV() {
 
 
 
-//v1.2
+//v1.3
