@@ -451,7 +451,7 @@ function mostrarTodosLosCodigos() {
 
 // fin web
 
-
+// Carga y procesamiento del archivo CSV
 function procesarCSV() {
   const fileInput = document.getElementById('csvFile');
   const file = fileInput.files[0];
@@ -476,10 +476,16 @@ function procesarCSV() {
         const peso = extraerPeso(resumen);
         const tamanos = extraerTamanos(resumen);
 
-        const caracteristicas = `Peso: ${peso || 'N/A'}, Tamaño: ${tamanos[0] || 'N/A'}`;
+        const tamanoPrincipal = tamanos[0] || 'N/A';
         const extradatos = tamanos.length > 1 ? 'x' : '';
 
-        resultados.push({ id, nombre, caracteristicas, extradatos });
+        resultados.push({
+          id,
+          nombre,
+          peso: peso || 'N/A',
+          tamano: tamanoPrincipal,
+          extradatos
+        });
       });
 
       mostrarResultados(resultados);
@@ -487,40 +493,60 @@ function procesarCSV() {
   });
 }
 
-function parseCSVLine(line) {
-  const values = [];
-  let current = '';
-  let inQuotes = false;
+// Función para mostrar los resultados en tabla
+function mostrarResultados(data) {
+  const table = document.getElementById('resultTable');
+  const tbody = table.querySelector('tbody');
+  tbody.innerHTML = '';
 
-  for (let i = 0; i < line.length; i++) {
-    const char = line[i];
-    const nextChar = line[i + 1];
+  data.forEach(row => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${row.id}</td>
+      <td>${row.nombre}</td>
+      <td>${row.peso}</td>
+      <td>${row.tamano}</td>
+      <td>${row.extradatos}</td>
+    `;
+    tbody.appendChild(tr);
+  });
 
-    if (char === '"' && inQuotes && nextChar === '"') {
-      current += '"';
-      i++; // skip next quote
-    } else if (char === '"') {
-      inQuotes = !inQuotes;
-    } else if (char === ',' && !inQuotes) {
-      values.push(current.trim());
-      current = '';
-    } else {
-      current += char;
-    }
-  }
-  values.push(current.trim());
-  return values;
+  table.style.display = 'table';
+  window.resultadosProcesados = data; // Guardar para exportar
 }
 
+// Exporta los datos procesados a un nuevo archivo CSV
+function exportarCSV() {
+  if (!window.resultadosProcesados || window.resultadosProcesados.length === 0) {
+    alert("No hay datos para exportar.");
+    return;
+  }
+
+  const encabezados = "ID,Nombre,Peso,Tamaño,Extradatos\n";
+  const filas = window.resultadosProcesados.map(row =>
+    `"${row.id}","${row.nombre}","${row.peso}","${row.tamano}","${row.extradatos}"`
+  ).join("\n");
+
+  const blob = new Blob([encabezados + filas], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = "productos_procesados.csv";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// Extrae el valor de peso desde el resumen
 function extraerPeso(texto) {
   if (!texto || typeof texto !== 'string') return null;
 
-  // Busca cualquier número seguido de grs, gr, g (opcionalmente precedido por "Peso")
+  // Acepta: "Peso 14.5 grs", "14.5 grs", "14,5 g"
   const match = texto.match(/(?:Peso\s*)?([\d.,]+)\s*(grs?|g)/i);
   return match ? match[1] + ' grs' : null;
 }
 
-
+// Extrae todos los tamaños (cm y mm) desde el resumen
 function extraerTamanos(texto) {
   if (!texto || typeof texto !== 'string') return [];
 
@@ -538,47 +564,6 @@ function extraerTamanos(texto) {
 }
 
 
-function mostrarResultados(data) {
-  const table = document.getElementById('resultTable');
-  const tbody = table.querySelector('tbody');
-  tbody.innerHTML = '';
-
-  data.forEach(row => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${row.id}</td>
-      <td>${row.nombre}</td>
-      <td>${row.caracteristicas}</td>
-      <td>${row.extradatos}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-
-  table.style.display = 'table';
-  window.resultadosProcesados = data;
-}
-
-function exportarCSV() {
-  if (!window.resultadosProcesados || window.resultadosProcesados.length === 0) {
-    alert("No hay datos para exportar.");
-    return;
-  }
-
-  const encabezados = "ID,Nombre,Características,Extradatos\n";
-  const filas = window.resultadosProcesados.map(row =>
-    `"${row.id}","${row.nombre}","${row.caracteristicas}","${row.extradatos}"`
-  ).join("\n");
-
-  const blob = new Blob([encabezados + filas], { type: 'text/csv' });
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = "resultados_procesados.csv";
-  a.click();
-  URL.revokeObjectURL(url);
-}
 
 
-
-//v1.6
+//v1.8
