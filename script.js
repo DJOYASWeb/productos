@@ -564,6 +564,27 @@ function extraerTamanos(texto) {
 }
 
 
+function ajustarPunto() {
+  if (!window.resultadosProcesados || window.resultadosProcesados.length === 0) {
+    alert("Primero debes procesar un archivo CSV.");
+    return;
+  }
+
+  // Reemplazar comas por puntos en peso y tamaño
+  window.resultadosProcesados = window.resultadosProcesados.map(row => {
+    const pesoAjustado = row.peso ? row.peso.replace(/,/g, '.') : row.peso;
+    const tamanoAjustado = row.tamano ? row.tamano.replace(/,/g, '.') : row.tamano;
+
+    return {
+      ...row,
+      peso: pesoAjustado,
+      tamano: tamanoAjustado
+    };
+  });
+
+  // Volver a mostrar resultados con los cambios
+  mostrarResultados(window.resultadosProcesados);
+}
 
 
-//v1.8
+//v1.9
