@@ -529,15 +529,21 @@ function parseCSVLine(line) {
 
 function extraerPeso(texto) {
   if (!texto || typeof texto !== 'string') return null;
-  const match = texto.match(/Peso\s*([\d.,]+)\s*grs/i);
+
+  // Busca cualquier número seguido de grs, gr, g (opcionalmente precedido por "Peso")
+  const match = texto.match(/(?:Peso\s*)?([\d.,]+)\s*(grs?|g)/i);
   return match ? match[1] + ' grs' : null;
 }
 
+
 function extraerTamanos(texto) {
   if (!texto || typeof texto !== 'string') return [];
-  const matches = [...texto.matchAll(/Tamaño\s*([\d.,]+)\s*cm/gi)];
+
+  // Busca cualquier número seguido de "cm", con coma o punto decimal
+  const matches = [...texto.matchAll(/([\d.,]+)\s*cm/gi)];
   return matches.map(m => m[1] + ' cm');
 }
+
 
 function mostrarResultados(data) {
   const table = document.getElementById('resultTable');
@@ -582,4 +588,4 @@ function exportarCSV() {
 
 
 
-//v1.3
+//v1.4
