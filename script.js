@@ -524,9 +524,17 @@ function extraerPeso(texto) {
 function extraerTamanos(texto) {
   if (!texto || typeof texto !== 'string') return [];
 
-  // Busca cualquier número seguido de "cm", con coma o punto decimal
-  const matches = [...texto.matchAll(/([\d.,]+)\s*cm/gi)];
-  return matches.map(m => m[1] + ' cm');
+  const medidas = [];
+
+  // Buscar medidas en cm
+  const matchesCM = [...texto.matchAll(/([\d.,]+)\s*cm/gi)];
+  matchesCM.forEach(m => medidas.push(m[1] + ' cm'));
+
+  // Buscar medidas en mm
+  const matchesMM = [...texto.matchAll(/([\d.,]+)\s*mm/gi)];
+  matchesMM.forEach(m => medidas.push(m[1] + ' mm'));
+
+  return medidas;
 }
 
 
@@ -573,4 +581,4 @@ function exportarCSV() {
 
 
 
-//v1.5
+//v1.6
