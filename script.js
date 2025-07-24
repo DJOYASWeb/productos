@@ -461,45 +461,30 @@ function procesarCSV() {
     return;
   }
 
-  const reader = new FileReader();
-  reader.onload = function (e) {
-    const lines = e.target.result.split('\n').filter(line => line.trim() !== '');
-    if (lines.length < 2) {
-      alert("El archivo CSV no tiene datos suficientes.");
-      return;
+  Papa.parse(file, {
+    header: true,
+    skipEmptyLines: true,
+    complete: function(results) {
+      const data = results.data;
+      const resultados = [];
+
+      data.forEach(row => {
+        const id = row['ID'] || '';
+        const nombre = row['Nombre'] || '';
+        const resumen = row['Resumen'] || '';
+
+        const peso = extraerPeso(resumen);
+        const tamanos = extraerTamanos(resumen);
+
+        const caracteristicas = `Peso: ${peso || 'N/A'}, Tamaño: ${tamanos[0] || 'N/A'}`;
+        const extradatos = tamanos.length > 1 ? 'x' : '';
+
+        resultados.push({ id, nombre, caracteristicas, extradatos });
+      });
+
+      mostrarResultados(resultados);
     }
-
-    const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
-    const idIndex = headers.indexOf('ID');
-    const nombreIndex = headers.indexOf('Nombre');
-    const resumenIndex = headers.indexOf('Resumen');
-
-    if (idIndex === -1 || nombreIndex === -1 || resumenIndex === -1) {
-      alert("El archivo debe tener las columnas: ID, Nombre, Resumen.");
-      return;
-    }
-
-    const resultados = [];
-
-    for (let i = 1; i < lines.length; i++) {
-      const row = parseCSVLine(lines[i]);
-      const id = row[idIndex] || '';
-      const nombre = row[nombreIndex] || '';
-      const resumen = row[resumenIndex] || '';
-
-      const peso = extraerPeso(resumen);
-      const tamanos = extraerTamanos(resumen);
-
-      const caracteristicas = `Peso: ${peso || 'N/A'}, Tamaño: ${tamanos[0] || 'N/A'}`;
-      const extradatos = tamanos.length > 1 ? 'x' : '';
-
-      resultados.push({ id, nombre, caracteristicas, extradatos });
-    }
-
-    mostrarResultados(resultados);
-  };
-
-  reader.readAsText(file);
+  });
 }
 
 function parseCSVLine(line) {
@@ -588,4 +573,4 @@ function exportarCSV() {
 
 
 
-//v1.4
+//v1.5
