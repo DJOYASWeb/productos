@@ -451,3 +451,96 @@ function mostrarTodosLosCodigos() {
 
 // fin web
 
+
+
+
+function procesarCSV() {
+  const fileInput = document.getElementById('csvFile');
+  const file = fileInput.files[0];
+  if (!file) {
+    alert("Por favor selecciona un archivo CSV.");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    const lines = e.target.result.split('\n').filter(line => line.trim() !== '');
+    const headers = lines[0].split(',');
+    const idIndex = headers.indexOf('ID');
+    const nombreIndex = headers.indexOf('Nombre');
+    const resumenIndex = headers.indexOf('Resumen');
+
+    const resultados = [];
+
+    for (let i = 1; i < lines.length; i++) {
+      const row = lines[i].split(',');
+      const id = row[idIndex];
+      const nombre = row[nombreIndex];
+      const resumen = row[resumenIndex];
+
+      const peso = extraerPeso(resumen);
+      const tamanos = extraerTamanos(resumen);
+
+      const caracteristicas = `Peso: ${peso || 'N/A'}, Tamaño: ${tamanos[0] || 'N/A'}`;
+      const extradatos = tamanos.length > 1 ? 'x' : '';
+
+      resultados.push({ id, nombre, caracteristicas, extradatos });
+    }
+
+    mostrarResultados(resultados);
+  };
+
+  reader.readAsText(file);
+}
+
+function extraerPeso(texto) {
+  const match = texto.match(/Peso\s*([\d.,]+)\s*grs/i);
+  return match ? match[1] + ' grs' : null;
+}
+
+function extraerTamanos(texto) {
+  const matches = [...texto.matchAll(/Tamaño\s*([\d.,]+)\s*cm/i)];
+  return matches.map(m => m[1] + ' cm');
+}
+
+function mostrarResultados(data) {
+  const table = document.getElementById('resultTable');
+  const tbody = table.querySelector('tbody');
+  tbody.innerHTML = '';
+
+  data.forEach(row => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${row.id}</td>
+      <td>${row.nombre}</td>
+      <td>${row.caracteristicas}</td>
+      <td>${row.extradatos}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  table.style.display = 'table';
+  window.resultadosProcesados = data; // Guardar para exportar luego
+}
+
+function exportarCSV() {
+  if (!window.resultadosProcesados) return;
+
+  const encabezados = "ID,Nombre,Características,Extradatos\n";
+  const filas = window.resultadosProcesados.map(row =>
+    `"${row.id}","${row.nombre}","${row.caracteristicas}","${row.extradatos}"`
+  ).join("\n");
+
+  const blob = new Blob([encabezados + filas], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = "resultados_procesados.csv";
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
+
+
+//v1

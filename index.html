@@ -126,7 +126,26 @@
 <section id="descripciones" class="tab-section">
   <h1>Descripciones</h1>
 
- 
+  <div class="procesador-descripciones">
+  <p>Sube un archivo CSV con las columnas: <strong>ID, Nombre, Resumen</strong>.</p>
+  
+  <input type="file" id="csvFile" accept=".csv">
+  <button onclick="procesarCSV()">Procesar</button>
+  <button onclick="exportarCSV()">Exportar CSV</button>
+
+  <table id="resultTable" style="display: none; margin-top: 20px;">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Características</th>
+        <th>Extradatos</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
 
 </section>
 
