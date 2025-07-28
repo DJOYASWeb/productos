@@ -466,3 +466,7 @@ background: #e5e5e5;
   background: #eaeaea;
 }
 
+container{
+    display: flex;
+    height: 100vh;
+}
