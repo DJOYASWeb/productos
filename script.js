@@ -589,4 +589,37 @@ function ajustarPunto() {
 }
 
 
-//v1.9
+
+
+
+// ========== MODAL PERSONALIZADO: PLANILLA ==========
+const modalColumnas = document.getElementById("modalColumnas");
+const botonProcesar = document.getElementById("botonProcesar");
+const cerrarModalColumnas = document.getElementById("cerrarModalColumnas");
+const cancelarExportar = document.getElementById("cancelarExportar");
+const confirmarExportar = document.getElementById("confirmarExportar");
+
+if (botonProcesar && modalColumnas) {
+  botonProcesar.addEventListener("click", () => {
+    modalColumnas.classList.remove("hidden");
+  });
+}
+
+[cerrarModalColumnas, cancelarExportar].forEach(boton => {
+  if (boton) {
+    boton.addEventListener("click", () => {
+      modalColumnas.classList.add("hidden");
+    });
+  }
+});
+
+if (confirmarExportar) {
+  confirmarExportar.addEventListener("click", () => {
+    modalColumnas.classList.add("hidden");
+    // Aquí llamás a tu función de exportación
+    exportarPlanillaAExcel(); // reemplazá con tu función real si se llama diferente
+  });
+}
+
+
+//v2
