@@ -155,7 +155,37 @@
 
 <section id="planilla" class="tab-section">
   <h1>Planilla</h1>
+    <div class="container">
+      <div class="tab-content-ios">
+        <div id="carga" class="tab-section ios-card">
+          <!-- Carga de planilla -->
+          <div class="formulario my-4">
+            <label for="excelFile" class="form-label">Selecciona tu archivo Excel (.xlsx):</label>
+            <input type="file" id="excelFile" accept=".xlsx" class="form-control">
+          </div>
 
+          <div id="alertas" class="alertas mb-3"></div>
+
+<div id="botonesTipo" class="d-none mb-3">
+<button class="btn btn-outline-dark me-2" onclick="mostrarProductosNuevos()">Productos nuevos</button>
+<button class="btn btn-outline-dark me-2" onclick="mostrarProductosReposicion()">Reposición</button>
+<button class="btn btn-outline-dark me-2" onclick="mostrarTablaCombinacionesCantidad()">Combinación cantidades</button>
+
+
+</div>
+
+<div id="tablaPreview" class="table-responsive mb-3"></div>
+
+<button id="botonProcesar" class="btn btn-primary mt-2 d-none" data-bs-toggle="modal" data-bs-target="#modalColumnas">
+  Procesar
+</button>
+        </div>
+
+        <div id="historial" class="tab-section d-none">
+          <!-- Historial de cargas -->
+        </div>
+      </div>
+    </div>
 </section>
 
 
