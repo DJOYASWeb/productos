@@ -112,7 +112,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+if (cerrarModal && modal) {
   cerrarModal.addEventListener("click", () => modal.classList.add('hidden'));
+}
   window.addEventListener("click", e => {
     if (e.target === modal) modal.classList.add('hidden');
   });
