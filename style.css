@@ -495,6 +495,7 @@ background: #e5e5e5;
     .sidebar ul {
       list-style: none;
       padding: 0;
+          margin-top: 1.5rem;
     }
 
     .sidebar li {
