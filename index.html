@@ -4,178 +4,182 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Gestión de Productos</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="layout">
+  <div class="container">
     <aside class="sidebar">
-      <img src="https://djoyasweb.github.io/productos/logo%20BN.png" alt="logo DJOYAS" width="80%">
+      <img src="https://djoyasweb.github.io/productos/logo%20BN.png" alt="logo DJOYAS" width="40%">
       <ul>
         <li><button class="tab-button" data-tab="productos">Productos</button></li>
         <li><button class="tab-button" data-tab="pdv">Carga PDV</button></li>
         <li><button class="tab-button" data-tab="transportistas">Transportistas</button></li>
         <li><button class="tab-button" data-tab="cotizaciones">Cotizaciones</button></li>
         <li><button class="tab-button" data-tab="descripciones">Descripciones</button></li>
-        <li><button class="tab-button" data-tab="planilla">Carga Presta</button></li>
       </ul>
     </aside>
 
     <main class="main-content">
-      <!-- Productos -->
       <section id="productos" class="tab-section active">
-        <h1>Listado de Productos DJOYAS</h1>
-        <div class="controls">
-          <input class="buscador form-control" type="text" id="buscador" placeholder="Buscar por SKU..." />
-          <button class="btn btn-primary mt-2" id="botonBuscar">Buscar</button>
-        </div>
-        <div class="filtros mt-3">
-          <select id="orden" class="form-select mb-2">
-            <option value="nombre">Ordenar por nombre</option>
-            <option value="id">Ordenar por ID</option>
-          </select>
-          <select id="filtroCategoria" class="form-select"></select>
-        </div>
-        <div class="grid" id="contenedorProductos"></div>
+  <h1>Listado de Productos DJOYAS</h1>
+  <div class="controls">
+    <input class="buscador" type="text" id="buscador" placeholder="Buscar por SKU..." />
+    <button id="botonBuscar">Buscar</button>
+
+
+  </div>
+
+  <div class="filtros">
+   <select id="orden">
+      <option value="nombre">Ordenar por nombre</option>
+      <option value="id">Ordenar por ID</option>
+    </select>
+  <select id="filtroCategoria"></select>
+  </div>
+  <div class="grid" id="contenedorProductos"></div>
       </section>
 
-      <!-- PDV -->
-      <section id="pdv" class="tab-section">
-        <h1>Carga de atributos PDV</h1>
-        <input type="file" id="archivoExcel" accept=".xlsx, .csv" />
-        <button onclick="mostrarTodosLosCodigos()">Ver códigos cargados</button>
-        <div id="debugCodigos" style="max-height: 200px; overflow-y: auto; font-size: 14px;"></div>
-        <p id="archivoCargado" style="font-style: italic;"></p>
-        <input type="text" id="buscadorPDV" placeholder="Buscar por código..." />
-        <button onclick="buscarCodigo()">Buscar</button>
-        <div id="resultadoPDV"></div>
-      </section>
+<section id="pdv" class="tab-section">
+  <h1>Carga de atributos PDV</h1>
 
-      <!-- Cotizaciones -->
-      <section id="cotizaciones" class="tab-section">
-        <h1>Cotizaciones</h1>
-        <button id="nuevaCotizacionBtn">➕ Nueva Cotización</button>
-        <button id="volverBtn" class="hidden">⬅ Atrás</button>
+  <!-- Subida de archivo -->
+  <input type="file" id="archivoExcel" accept=".xlsx, .csv" />
+<button onclick="mostrarTodosLosCodigos()">Ver códigos cargados</button>
+<div id="debugCodigos" style="max-height: 200px; overflow-y: auto; font-size: 14px;"></div>
+  <p id="archivoCargado" style="font-style: italic;"></p>
 
-        <div id="formCotizacion" class="hidden">
-          <h3>Crear Cotización</h3>
-          <div id="formCliente">
-            <label for="cliente">Nombre del Cliente:</label>
-            <input type="text" id="cliente" required>
-            <label for="correo">Correo Electrónico:</label>
-            <input type="email" id="correo" required>
-          </div>
-          <hr>
-          <h4>Agregar Productos</h4>
-          <div id="productoForm">
-            <input type="text" id="busquedaNombre" placeholder="Buscar por nombre...">
-            <input type="text" id="busquedaSKU" placeholder="Buscar por SKU...">
-            <input type="number" id="cantidadProducto" min="1" value="1" placeholder="Cantidad">
-            <button type="button" id="agregarProductoBtn">Agregar Producto</button>
-          </div>
-          <div id="listaProductosCotizacion"></div>
-          <p><strong>Total Cotización:</strong> $<span id="totalCotizacion">0</span></p>
-          <button type="button" id="guardarCotizacionBtn">Guardar Cotización</button>
-        </div>
+  <!-- Buscador -->
+  <input type="text" id="buscadorPDV" placeholder="Buscar por código..." />
+  <button onclick="buscarCodigo()">Buscar</button>
 
-        <hr>
+  <!-- Resultado -->
+  <div id="resultadoPDV"></div>
+</section>
 
-        <h3>Historial de Cotizaciones</h3>
-        <table id="tablaCotizaciones" class="table">
-          <thead>
-            <tr>
-              <th>Cliente</th>
-              <th>Correo</th>
-              <th>Fecha</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
 
-        <section id="detalleCotizacion" class="tab-section hidden">
-          <button id="volverHistorialBtn">⬅ Volver al historial</button>
-          <h2>Detalle de Cotización</h2>
-          <div id="detalleCotizacionContenido" class="cotizacion-ficha">
-            <p><strong>Cliente:</strong> <span id="detalleCliente"></span></p>
-            <p><strong>Correo:</strong> <span id="detalleCorreo"></span></p>
-            <p><strong>Fecha:</strong> <span id="detalleFecha"></span></p>
-            <h4>Productos:</h4>
-            <ul id="detalleProductos"></ul>
-            <p><strong>Total:</strong> $<span id="detalleTotal"></span></p>
-            <button id="imprimirCotizacionBtn">🖨️ Imprimir / Guardar PDF</button>
-          </div>
-        </section>
-      </section>
+<section id="cotizaciones" class="tab-section">
+  <h1>Cotizaciones</h1>
 
-      <!-- Descripciones -->
-      <section id="descripciones" class="tab-section">
-        <h1>Descripciones</h1>
-        <p>Sube un archivo CSV con las columnas: <strong>ID, Nombre, Resumen</strong>.</p>
-        <input type="file" id="csvFile" accept=".csv">
-        <button onclick="procesarCSV()">Procesar</button>
-        <button onclick="ajustarPunto()">Ajustar punto</button>
-        <button onclick="exportarCSV()">Exportar CSV</button>
-        <table id="resultTable" style="display: none; margin-top: 20px;" class="table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Peso</th>
-              <th>Tamaño</th>
-              <th>Extradatos</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </section>
+  <button id="nuevaCotizacionBtn">➕ Nueva Cotización</button>
+  <button id="volverBtn" class="hidden">⬅ Atrás</button>
 
-      <!-- Planilla -->
-      <section id="planilla" class="tab-section">
-        <h1>Planilla</h1>
-        <div id="carga" class="">
-          <div class="formulario my-4">
-            <label for="excelFile" class="form-label">Selecciona tu archivo Excel (.xlsx):</label>
-            <input type="file" id="excelFile" accept=".xlsx" class="form-control">
-          </div>
+  <!-- Formulario dinámico de cotización -->
+  <div id="formCotizacion" class="hidden">
+    <h3>Crear Cotización</h3>
 
-          <div id="alertas" class="alertas mb-3"></div>
+    <div id="formCliente">
+      <label for="cliente">Nombre del Cliente:</label>
+      <input type="text" id="cliente" required>
 
-          <div id="botonesTipo" class="d-none mb-3">
-            <button class="btn btn-outline-dark me-2" onclick="mostrarProductosNuevos()">Productos nuevos</button>
-            <button class="btn btn-outline-dark me-2" onclick="mostrarProductosReposicion()">Reposición</button>
-            <button class="btn btn-outline-dark me-2" onclick="mostrarTablaCombinacionesCantidad()">Combinación cantidades</button>
-          </div>
+      <label for="correo">Correo Electrónico:</label>
+      <input type="email" id="correo" required>
+    </div>
 
-          <div id="tablaPreview" class="table-responsive mb-3"></div>
+    <hr>
 
-          <button id="botonProcesar" class="btn btn-primary mt-2 d-none" data-bs-toggle="modal" data-bs-target="#modalColumnas">
-            Procesar
-          </button>
-        </div>
-      </section>
+    <h4>Agregar Productos</h4>
+    <div id="productoForm">
+      <input type="text" id="busquedaNombre" placeholder="Buscar por nombre...">
+      <input type="text" id="busquedaSKU" placeholder="Buscar por SKU...">
+      <input type="number" id="cantidadProducto" min="1" value="1" placeholder="Cantidad">
+      <button type="button" id="agregarProductoBtn">Agregar Producto</button>
+    </div>
+
+    <div id="listaProductosCotizacion"></div>
+
+    <p><strong>Total Cotización:</strong> $<span id="totalCotizacion">0</span></p>
+
+    <button type="button" id="guardarCotizacionBtn">Guardar Cotización</button>
+  </div>
+
+  <hr>
+
+  <h3>Historial de Cotizaciones</h3>
+  <table id="tablaCotizaciones">
+    <thead>
+      <tr>
+        <th>Cliente</th>
+        <th>Correo</th>
+        <th>Fecha</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <section id="detalleCotizacion" class="tab-section hidden">
+  <button id="volverHistorialBtn">⬅ Volver al historial</button>
+  <h2>Detalle de Cotización</h2>
+  <div id="detalleCotizacionContenido" class="cotizacion-ficha">
+    <p><strong>Cliente:</strong> <span id="detalleCliente"></span></p>
+    <p><strong>Correo:</strong> <span id="detalleCorreo"></span></p>
+    <p><strong>Fecha:</strong> <span id="detalleFecha"></span></p>
+    <h4>Productos:</h4>
+    <ul id="detalleProductos"></ul>
+    <p><strong>Total:</strong> $<span id="detalleTotal"></span></p>
+    <button id="imprimirCotizacionBtn">🖨️ Imprimir / Guardar PDF</button>
+  </div>
+</section>
+
+</section>
+
+<section id="descripciones" class="tab-section">
+  <h1>Descripciones</h1>
+
+  <div class="procesador-descripciones">
+  <p>Sube un archivo CSV con las columnas: <strong>ID, Nombre, Resumen</strong>.</p>
+  
+  <input type="file" id="csvFile" accept=".csv">
+  <button onclick="procesarCSV()">Procesar</button>
+  <button onclick="ajustarPunto()">Ajustar punto</button>
+  <button onclick="exportarCSV()">Exportar CSV</button>
+  
+
+  <table id="resultTable" style="display: none; margin-top: 20px;">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Peso</th>
+      <th>Tamaño</th>
+      <th>Extradatos</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+</div>
+
+
+</section>
+
+
+
+
     </main>
   </div>
 
-  <!-- Modal Bootstrap -->
-<div id="modalColumnas" class="mi-modal hidden">
-  <div class="mi-modal-contenido">
-    <button id="cerrarModalColumnas" class="cerrar">×</button>
-    <h5>Confirmar exportación</h5>
-    <p>Estas son las columnas que se incluirán en el archivo:</p>
-    <ul id="columnasFinales" class="list-group list-group-numbered small"></ul>
-    <div class="text-end mt-3">
-      <button id="cancelarExportar" class="btn btn-secondary">Cancelar</button>
-      <button id="confirmarExportar" class="btn btn-primary">Exportar</button>
+
+   <div id="modal" class="modal hidden">
+
+    <div class="modal-content">
+      <h2 id="modalNombre"></h2><hr>
+      <div class="division">
+      <div class="izquierda">      <img id="modalImagen" src="" alt=""></div>
+      <div class="derecha">     
+          <p><strong>ID:</strong> <span id="modalID"></span></p>   
+       <p><strong>SKU:</strong> <span id="modalSKU"></span></p>
+      <p><strong>Categoría:</strong> <span id="modalCategoria"></span></p>
+      <p><strong>Resumen:</strong> <span id="modalResumen"></span></p>
+      <p><strong>Características:</strong> <span id="modalCaracteristicas"></span></p>
+    </div>
+      <span id="cerrarModal" class="cerrar">&times;</span>
+      </div>
+
+
     </div>
   </div>
-</div>
-
-  <!-- Scripts externos -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script src="script.js"></script>
-  <script src="planilla.js"></script>
 </body>
 </html>
