@@ -4,7 +4,7 @@ body {
   background: #f4f4f4;
 }
 
-.container {
+.cuerpo {
   display: flex;
   height: 100vh;
 }
