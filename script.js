@@ -692,8 +692,7 @@ function buscarCliente() {
                     <p><strong>Cantidad de Compras:</strong> ${clientaActual['Total cant'] || 0} compras</p>
                     <p><strong>Monto Total Comprado:</strong> <span style="font-weight: bold; color: #28a745;">${montoFormateado}</span></p>
                     <p><strong>Categoría:</strong> <span class="badge" style="background: #eee; padding: 2px 8px; border-radius: 4px;">${clientaActual['Prog Fidelización']}</span></p>
-                    <p><strong>Valorización:</strong> ${clientaActual.Valorización || 'N/A'}</p>
-                </div>
+                                    </div>
             </div>
         `;
 
