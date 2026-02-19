@@ -329,42 +329,6 @@ if (cerrarModal && modal) {
 // CARGA DE ARCHIVO EXCEL (.xlsx)
 // ----------------------
 
-let datosPDV = [];
-
-document.getElementById("archivoExcel").addEventListener("change", function (e) {
-  const archivo = e.target.files[0];
-  if (!archivo) return;
-
-  const lector = new FileReader();
-  lector.onload = function (event) {
-    const data = new Uint8Array(event.target.result);
-    const workbook = XLSX.read(data, { type: "array" });
-
-    const nombreHoja = workbook.SheetNames[0];
-    const hoja = workbook.Sheets[nombreHoja];
-
-    // Leer como array desde la hoja (sin interpretar encabezados)
-    const opciones = { header: 1, defval: "" };
-    const datosCrudos = XLSX.utils.sheet_to_json(hoja, opciones);
-
-    // Fila 3 = índice 2 (encabezados), datos desde fila 4 en adelante
-    const encabezados = datosCrudos[2];
-    const filas = datosCrudos.slice(3);
-
-    datosPDV = filas.map(fila => {
-      const obj = {};
-      encabezados.forEach((col, i) => {
-        obj[col.trim()] = fila[i] || "";
-      });
-      return obj;
-    });
-
-    document.getElementById("archivoCargado").textContent = `Archivo cargado: ${archivo.name}`;
-    console.log("Datos cargados:", datosPDV);
-  };
-
-  lector.readAsArrayBuffer(archivo);
-});
 
 // ----------------------
 // BÚSQUEDA POR CÓDIGO
