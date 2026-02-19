@@ -643,14 +643,14 @@ document.getElementById('btnBuscarCliente').addEventListener('click', buscarClie
 document.addEventListener('DOMContentLoaded', cargarDatosFidelizacion);
 
 
-// Variable global para guardar la clienta encontrada actualmente
+// Variable para guardar la clienta que se buscó
 let clientaActual = null;
 
-// Modifica tu función buscarCliente para guardar el objeto encontrado
 function buscarCliente() {
     const termino = document.getElementById('inputBusquedaCliente').value.toLowerCase().trim();
     const contenedorRaiz = document.getElementById('resultadoCliente');
     const contenedorInfo = document.getElementById('infoDetalladaCliente');
+    const areaMensaje = document.getElementById('areaMensaje');
 
     if (!termino) return;
 
@@ -662,43 +662,60 @@ function buscarCliente() {
 
     if (clientaActual) {
         contenedorRaiz.classList.remove('hidden');
-        // Renderizamos la info (puedes mantener tu código anterior aquí)
+        areaMensaje.classList.remove('hidden'); // Mostramos el área del mensaje
+        
+        // 1. Mostrar info básica en la ficha
         contenedorInfo.innerHTML = `
             <p><strong>Nombre:</strong> ${clientaActual.Nombre} ${clientaActual.Apellido}</p>
             <p><strong>Categoría:</strong> ${clientaActual['Prog Fidelización']}</p>
         `;
+
+        // 2. Generar el texto en el textarea
+        generarTextoEnPantalla();
     } else {
         alert("Clienta no encontrada");
         contenedorRaiz.classList.add('hidden');
+        areaMensaje.classList.add('hidden');
         clientaActual = null;
     }
 }
 
-// Nueva función para generar y copiar el mensaje
-function generarMensajeWhatsApp() {
+function generarTextoEnPantalla() {
     if (!clientaActual) return;
 
     const nombre = clientaActual.Nombre || "Clienta";
     const categoria = clientaActual['Prog Fidelización'] || "General";
-    const totalCompras = clientaActual['Total cant'] || "0";
+    const compras = clientaActual['Total cant'] || "0";
     
-    // Armamos el texto (usamos \n para saltos de línea)
-    const mensaje = `¡Hola ${nombre}! ✨ Te saludamos de DJOYAS. 
-    
-Queríamos contarte que actualmente eres categoría: *${categoria}* 💎. 
-Llevas un total de ${totalCompras} compras con nosotros. 
+    const mensaje = `¡Hola ${nombre}! ✨ Te saludamos de DJOYAS. 💍
 
-¡Gracias por preferirnos! 💍`;
+Queríamos contarte que según nuestro programa de fidelización, tu categoría actual es: *${categoria}*. 💎
 
-    // Copiar al portapapeles
-    navigator.clipboard.writeText(mensaje).then(() => {
-        alert("Mensaje copiado al portapapeles. ¡Ya puedes pegarlo en WhatsApp!");
-    }).catch(err => {
-        console.error('Error al copiar: ', err);
+Has realizado ${compras} compras con nosotros y valoramos mucho tu preferencia. ¡Que tengas un gran día! 🌸`;
+
+    document.getElementById('textoMensaje').value = mensaje;
+}
+
+// Función para el botón Copiar
+function copiarAlPortapapeles() {
+    const texto = document.getElementById('textoMensaje');
+    texto.select();
+    texto.setSelectionRange(0, 99999); // Para móviles
+
+    navigator.clipboard.writeText(texto.value).then(() => {
+        const btn = document.getElementById('btnCopiarTexto');
+        const originalText = btn.innerText;
+        btn.innerText = "✅ ¡Copiado!";
+        btn.style.backgroundColor = "#28a745";
+
+        setTimeout(() => {
+            btn.innerText = originalText;
+            btn.style.backgroundColor = "#007bff";
+        }, 2000);
     });
 }
 
-// No olvides registrar el evento dentro del DOMContentLoaded
-document.getElementById('btnCopiarWSP').addEventListener('click', generarMensajeWhatsApp);
+// No olvides registrar el evento en tu DOMContentLoaded
+document.getElementById('btnCopiarTexto').addEventListener('click', copiarAlPortapapeles);
 
 //v2
