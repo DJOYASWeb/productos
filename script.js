@@ -616,44 +616,7 @@ document.addEventListener('DOMContentLoaded', cargarDatosFidelizacion);
 let clientaActual = null;
 
 
-function generarTextoEnPantalla() {
-    if (!clientaActual) {
-        alert("Primero debes buscar una clienta");
-        return;
-    }
 
-    const nombre = clientaActual.Nombre || "Clienta";
-    const categoria = clientaActual['Prog Fidelización'] || "General";
-    const compras = clientaActual['Total cant'] || "0";
-    // Formateamos el monto para que se vea limpio en el mensaje
-    const montoTotal = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(clientaActual['Total monto'] || 0);
-    
-    // Definimos beneficios según la categoría (puedes editar estos textos)
-    let beneficios = "";
-    if (categoria.toLowerCase().includes("diamante")) {
-        beneficios = "- 15% DCTO en toda la tienda\n- Envío gratis en todas tus compras\n- Regalo por mes de cumpleaños";
-    } else if (categoria.toLowerCase().includes("oro") || categoria.toLowerCase().includes("gold")) {
-        beneficios = "- 10% DCTO en toda la tienda\n- Acceso anticipado a nuevas colecciones";
-    } else {
-        beneficios = "- 5% DCTO en tu próxima compra\n- Puntos acumulables por cada compra";
-    }
-
-    const mensaje = `¡Hola ${nombre}! ✨
-
-Perteneces al grupo *"${categoria}"* 💎
-
-Correspondiente al período de compras desde el 10/01/2025 al 10/01/2026.
-
-✅ Realizaste ${compras} compras por un total de ${montoTotal}.
-
-*Beneficios grupo ${categoria}:*
-${beneficios}
-
-¡Gracias por ser parte de DJOYAS! 💍`;
-
-    document.getElementById('textoMensaje').value = mensaje;
-    document.getElementById('areaMensaje').classList.remove('hidden');
-}
 
 // Función para el botón Copiar
 function copiarAlPortapapeles() {
@@ -722,7 +685,6 @@ function buscarCliente() {
     }
 }
 
-// 2. Función que se activa con el botón "Generar mensaje WhatsApp"
 function generarTextoEnPantalla() {
     if (!clientaActual) {
         alert("Primero debes buscar una clienta");
@@ -732,11 +694,34 @@ function generarTextoEnPantalla() {
     const nombre = clientaActual.Nombre || "Clienta";
     const categoria = clientaActual['Prog Fidelización'] || "General";
     const compras = clientaActual['Total cant'] || "0";
+    // Formateamos el monto para que se vea limpio en el mensaje
+    const montoTotal = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(clientaActual['Total monto'] || 0);
     
-    const mensaje = `¡Hola ${nombre}! ✨ Te saludamos de DJOYAS. 💍\n\nQueríamos contarte que según nuestro programa de fidelización, tu categoría actual es: *${categoria}*. 💎\n\nHas realizado ${compras} compras con nosotros y valoramos mucho tu preferencia. ¡Que tengas un gran día! 🌸`;
+    // Definimos beneficios según la categoría (puedes editar estos textos)
+    let beneficios = "";
+    if (categoria.toLowerCase().includes("diamante")) {
+        beneficios = "- 15% DCTO en toda la tienda\n- Envío gratis en todas tus compras\n- Regalo por mes de cumpleaños";
+    } else if (categoria.toLowerCase().includes("oro") || categoria.toLowerCase().includes("gold")) {
+        beneficios = "- 10% DCTO en toda la tienda\n- Acceso anticipado a nuevas colecciones";
+    } else {
+        beneficios = "- 5% DCTO en tu próxima compra\n- Puntos acumulables por cada compra";
+    }
+
+    const mensaje = `¡Hola ${nombre}! ✨
+
+Perteneces al grupo *"${categoria}"* 💎
+
+Correspondiente al período de compras desde el 10/01/2025 al 10/01/2026.
+
+✅ Realizaste ${compras} compras por un total de ${montoTotal}.
+
+*Beneficios grupo ${categoria}:*
+${beneficios}
+
+¡Gracias por ser parte de DJOYAS! 💍`;
 
     document.getElementById('textoMensaje').value = mensaje;
-    document.getElementById('areaMensaje').classList.remove('hidden'); // Mostrar el cuadro ahora
+    document.getElementById('areaMensaje').classList.remove('hidden');
 }
 
 // 3. Registro de eventos (dentro de tu DOMContentLoaded)
