@@ -605,60 +605,7 @@ async function cargarDatosFidelizacion() {
     }
 }
 
-function buscarCliente() {
-    const termino = document.getElementById('inputBusquedaCliente').value.toLowerCase().trim();
-    const contenedorRaiz = document.getElementById('resultadoCliente');
-    const contenedorInfo = document.getElementById('infoDetalladaCliente');
-    const areaMensaje = document.getElementById('areaMensaje');
 
-    if (!termino) return;
-
-    // Búsqueda en los campos clave del archivo 
-    clientaActual = datosFidelizacion.find(c => 
-        String(c.Rut).toLowerCase().includes(termino) ||
-        String(c['RUT SIMPLIFICADO']).toLowerCase().includes(termino) ||
-        String(c.Email).toLowerCase().includes(termino)
-    );
-
-    if (clientaActual) {
-        contenedorRaiz.classList.remove('hidden');
-        areaMensaje.classList.remove('hidden');
-        
-        // Renderizado de todos los datos asociados 
-        contenedorInfo.innerHTML = `
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <div>
-                    <h4>Datos Personales</h4>
-                    <p><strong>Nombre completo:</strong> ${clientaActual.Nombre} ${clientaActual.Apellido}</p>
-                    <p><strong>RUT:</strong> ${clientaActual.Rut}</p>
-                    <p><strong>Email:</strong> ${clientaActual.Email}</p>
-                    <p><strong>Celular:</strong> ${clientaActual.Celular || 'No registrado'}</p>
-                    <p><strong>Ciudad:</strong> ${clientaActual.Ciudad || 'No especificada'}</p>
-                    <p><strong>Sucursal:</strong> ${clientaActual.Sucursal || 'N/A'}</p>
-                </div>
-                <div>
-                    <h4>Historial Comercial</h4>
-                    <p><strong>Total Compras:</strong> ${clientaActual['Total cant']}</p>
-                    <p><strong>Monto Total:</strong> ${clientaActual['Total monto']}</p>
-                    <p><strong>Promedio x Compra:</strong> ${clientaActual['Promedio x compra']}</p>
-                    <p><strong>Compras Tienda:</strong> ${clientaActual['Compras tiendas'] || 0}</p>
-                    <p><strong>Compras Web:</strong> ${clientaActual['Compras en Web'] || 0}</p>
-                    <hr>
-                    <p><strong>Prog. Fidelización:</strong> <span class="badge">${clientaActual['Prog Fidelización']}</span></p>
-                    <p><strong>Categoría Anterior:</strong> ${clientaActual['Categoría anterior'] || 'Sin registro'}</p>
-                    <p><strong>Valorización:</strong> ${clientaActual.Valorización}</p>
-                </div>
-            </div>
-        `;
-
-        generarTextoEnPantalla();
-    } else {
-        alert("Clienta no encontrada");
-        contenedorRaiz.classList.add('hidden');
-        areaMensaje.classList.add('hidden');
-        clientaActual = null;
-    }
-}
 
 // Event Listeners
 document.getElementById('btnBuscarCliente').addEventListener('click', buscarCliente);
@@ -668,39 +615,6 @@ document.addEventListener('DOMContentLoaded', cargarDatosFidelizacion);
 // Variable para guardar la clienta que se buscó
 let clientaActual = null;
 
-function buscarCliente() {
-    const termino = document.getElementById('inputBusquedaCliente').value.toLowerCase().trim();
-    const contenedorRaiz = document.getElementById('resultadoCliente');
-    const contenedorInfo = document.getElementById('infoDetalladaCliente');
-    const areaMensaje = document.getElementById('areaMensaje');
-
-    if (!termino) return;
-
-    clientaActual = datosFidelizacion.find(c => 
-        String(c.Rut).toLowerCase().includes(termino) ||
-        String(c['RUT SIMPLIFICADO']).toLowerCase().includes(termino) ||
-        String(c.Email).toLowerCase().includes(termino)
-    );
-
-    if (clientaActual) {
-        contenedorRaiz.classList.remove('hidden');
-        areaMensaje.classList.remove('hidden'); // Mostramos el área del mensaje
-        
-        // 1. Mostrar info básica en la ficha
-        contenedorInfo.innerHTML = `
-            <p><strong>Nombre:</strong> ${clientaActual.Nombre} ${clientaActual.Apellido}</p>
-            <p><strong>Categoría:</strong> ${clientaActual['Prog Fidelización']}</p>
-        `;
-
-        // 2. Generar el texto en el textarea
-        generarTextoEnPantalla();
-    } else {
-        alert("Clienta no encontrada");
-        contenedorRaiz.classList.add('hidden');
-        areaMensaje.classList.add('hidden');
-        clientaActual = null;
-    }
-}
 
 function generarTextoEnPantalla() {
     if (!clientaActual) return;
@@ -739,5 +653,60 @@ function copiarAlPortapapeles() {
 
 // No olvides registrar el evento en tu DOMContentLoaded
 document.getElementById('btnCopiarTexto').addEventListener('click', copiarAlPortapapeles);
+
+
+
+function buscarCliente() {
+    const termino = document.getElementById('inputBusquedaCliente').value.toLowerCase().trim();
+    const contenedorRaiz = document.getElementById('resultadoCliente');
+    const contenedorInfo = document.getElementById('infoDetalladaCliente');
+    const areaMensaje = document.getElementById('areaMensaje');
+
+    if (!termino) return;
+
+    // Buscamos a la clienta en la base de datos cargada del Excel
+    clientaActual = datosFidelizacion.find(c => 
+        String(c.Rut).toLowerCase().includes(termino) ||
+        String(c['RUT SIMPLIFICADO']).toLowerCase().includes(termino) ||
+        String(c.Email).toLowerCase().includes(termino)
+    );
+
+    if (clientaActual) {
+        contenedorRaiz.classList.remove('hidden');
+        areaMensaje.classList.remove('hidden');
+        
+        // Formateamos el monto a moneda (opcional, pero se ve más pro)
+        const montoFormateado = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(clientaActual['Total monto'] || 0);
+
+        contenedorInfo.innerHTML = `
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <h4>Información de Contacto</h4>
+                    <p><strong>Nombre:</strong> ${clientaActual.Nombre} ${clientaActual.Apellido}</p>
+                    <p><strong>RUT:</strong> ${clientaActual.Rut}</p>
+                    <p><strong>Correo:</strong> <span style="color: #007bff;">${clientaActual.Email}</span></p>
+                    <p><strong>Ciudad:</strong> ${clientaActual.Ciudad || 'No registra'}</p>
+                </div>
+                <div>
+                    <h4>Resumen de Ventas</h4>
+                    <p><strong>Cantidad de Compras:</strong> ${clientaActual['Total cant'] || 0} compras</p>
+                    <p><strong>Monto Total Comprado:</strong> <span style="font-weight: bold; color: #28a745;">${montoFormateado}</span></p>
+                    <p><strong>Categoría:</strong> <span class="badge" style="background: #eee; padding: 2px 8px; border-radius: 4px;">${clientaActual['Prog Fidelización']}</span></p>
+                    <p><strong>Valorización:</strong> ${clientaActual.Valorización || 'N/A'}</p>
+                </div>
+            </div>
+        `;
+
+        generarTextoEnPantalla();
+    } else {
+        alert("Clienta no encontrada");
+        contenedorRaiz.classList.add('hidden');
+        areaMensaje.classList.add('hidden');
+        clientaActual = null;
+    }
+}
+
+
+
 
 //v2
