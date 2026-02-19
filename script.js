@@ -656,6 +656,7 @@ document.getElementById('btnCopiarTexto').addEventListener('click', copiarAlPort
 
 
 
+// 1. Función de Búsqueda (Solo muestra los datos del RUT)
 function buscarCliente() {
     const termino = document.getElementById('inputBusquedaCliente').value.toLowerCase().trim();
     const contenedorRaiz = document.getElementById('resultadoCliente');
@@ -664,18 +665,15 @@ function buscarCliente() {
 
     if (!termino) return;
 
-    // Buscamos a la clienta en la base de datos cargada del Excel
     clientaActual = datosFidelizacion.find(c => 
         String(c.Rut).toLowerCase().includes(termino) ||
-        String(c['RUT SIMPLIFICADO']).toLowerCase().includes(termino) ||
         String(c.Email).toLowerCase().includes(termino)
     );
 
     if (clientaActual) {
         contenedorRaiz.classList.remove('hidden');
-        areaMensaje.classList.remove('hidden');
+        areaMensaje.classList.add('hidden'); // Mantenemos el mensaje oculto al buscar
         
-        // Formateamos el monto a moneda (opcional, pero se ve más pro)
         const montoFormateado = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(clientaActual['Total monto'] || 0);
 
         contenedorInfo.innerHTML = `
@@ -685,26 +683,43 @@ function buscarCliente() {
                     <p><strong>Nombre:</strong> ${clientaActual.Nombre} ${clientaActual.Apellido}</p>
                     <p><strong>RUT:</strong> ${clientaActual.Rut}</p>
                     <p><strong>Correo:</strong> <span style="color: #007bff;">${clientaActual.Email}</span></p>
-                    <p><strong>Ciudad:</strong> ${clientaActual.Ciudad || 'No registra'}</p>
                 </div>
                 <div>
                     <h4>Resumen de Ventas</h4>
-                    <p><strong>Cantidad de Compras:</strong> ${clientaActual['Total cant'] || 0} compras</p>
+                    <p><strong>Cantidad de Compras:</strong> ${clientaActual['Total cant'] || 0}</p>
                     <p><strong>Monto Total Comprado:</strong> <span style="font-weight: bold; color: #28a745;">${montoFormateado}</span></p>
-                    <p><strong>Categoría:</strong> <span class="badge" style="background: #eee; padding: 2px 8px; border-radius: 4px;">${clientaActual['Prog Fidelización']}</span></p>
-                                    </div>
+                    <p><strong>Categoría:</strong> ${clientaActual['Prog Fidelización']}</p>
+                </div>
             </div>
         `;
-
-        generarTextoEnPantalla();
     } else {
         alert("Clienta no encontrada");
         contenedorRaiz.classList.add('hidden');
-        areaMensaje.classList.add('hidden');
         clientaActual = null;
     }
 }
 
+// 2. Función que se activa con el botón "Generar mensaje WhatsApp"
+function generarTextoEnPantalla() {
+    if (!clientaActual) {
+        alert("Primero debes buscar una clienta");
+        return;
+    }
+
+    const nombre = clientaActual.Nombre || "Clienta";
+    const categoria = clientaActual['Prog Fidelización'] || "General";
+    const compras = clientaActual['Total cant'] || "0";
+    
+    const mensaje = `¡Hola ${nombre}! ✨ Te saludamos de DJOYAS. 💍\n\nQueríamos contarte que según nuestro programa de fidelización, tu categoría actual es: *${categoria}*. 💎\n\nHas realizado ${compras} compras con nosotros y valoramos mucho tu preferencia. ¡Que tengas un gran día! 🌸`;
+
+    document.getElementById('textoMensaje').value = mensaje;
+    document.getElementById('areaMensaje').classList.remove('hidden'); // Mostrar el cuadro ahora
+}
+
+// 3. Registro de eventos (dentro de tu DOMContentLoaded)
+document.getElementById('btnBuscarCliente').addEventListener('click', buscarCliente);
+document.getElementById('btnGenerarWSP').addEventListener('click', generarTextoEnPantalla);
+document.getElementById('btnCopiarTexto').addEventListener('click', copiarAlPortapapeles);
 
 
 
