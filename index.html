@@ -39,22 +39,6 @@
   <div class="grid" id="contenedorProductos"></div>
       </section>
 
-<section id="pdv" class="tab-section">
-  <h1>Carga de atributos PDV</h1>
-
-  <!-- Subida de archivo -->
-  <input type="file" id="archivoExcel" accept=".xlsx, .csv" />
-<button onclick="mostrarTodosLosCodigos()">Ver códigos cargados</button>
-<div id="debugCodigos" style="max-height: 200px; overflow-y: auto; font-size: 14px;"></div>
-  <p id="archivoCargado" style="font-style: italic;"></p>
-
-  <!-- Buscador -->
-  <input type="text" id="buscadorPDV" placeholder="Buscar por código..." />
-  <button onclick="buscarCodigo()">Buscar</button>
-
-  <!-- Resultado -->
-  <div id="resultadoPDV"></div>
-</section>
 
 
 <section id="cotizaciones" class="tab-section">
@@ -122,37 +106,6 @@
 </section>
 
 </section>
-
-<section id="descripciones" class="tab-section">
-  <h1>Descripciones</h1>
-
-  <div class="procesador-descripciones">
-  <p>Sube un archivo CSV con las columnas: <strong>ID, Nombre, Resumen</strong>.</p>
-  
-  <input type="file" id="csvFile" accept=".csv">
-  <button onclick="procesarCSV()">Procesar</button>
-  <button onclick="ajustarPunto()">Ajustar punto</button>
-  <button onclick="exportarCSV()">Exportar CSV</button>
-  
-
-  <table id="resultTable" style="display: none; margin-top: 20px;">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Nombre</th>
-      <th>Peso</th>
-      <th>Tamaño</th>
-      <th>Extradatos</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
-</div>
-
-
-</section>
-
-
 
 
     </main>
