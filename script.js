@@ -622,4 +622,63 @@ if (confirmarExportar) {
 }
 
 
+
+
+
+let datosFidelizacion = [];
+
+// 1. Cargar los datos al iniciar la página
+async function cargarDatosFidelizacion() {
+    try {
+        const response = await fetch('assets/data/Fidelizacion - enero 2025-2026.xlsx');
+        const arrayBuffer = await response.arrayBuffer();
+        const workbook = XLSX.read(arrayBuffer);
+        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+        datosFidelizacion = XLSX.utils.sheet_to_json(firstSheet);
+        console.log("Base de datos de clientas cargada");
+    } catch (error) {
+        console.error("Error al cargar el archivo de clientas:", error);
+    }
+}
+
+// 2. Función de búsqueda
+function buscarCliente() {
+    const termino = document.getElementById('inputBusquedaCliente').value.toLowerCase().trim();
+    const contenedorRaiz = document.getElementById('resultadoCliente');
+    const contenedorInfo = document.getElementById('infoDetalladaCliente');
+
+    if (!termino) return;
+
+    // Buscamos coincidencia en RUT, RUT Simplificado o Email
+    const cliente = datosFidelizacion.find(c => 
+        String(c.Rut).toLowerCase().includes(termino) ||
+        String(c['RUT SIMPLIFICADO']).toLowerCase().includes(termino) ||
+        String(c.Email).toLowerCase().includes(termino)
+    );
+
+    if (cliente) {
+        contenedorRaiz.classList.remove('hidden');
+        contenedorInfo.innerHTML = `
+            <p><strong>Nombre:</strong> ${cliente.Nombre} ${cliente.Apellido}</p>
+            <p><strong>RUT:</strong> ${cliente.Rut}</p>
+            <p><strong>Email:</strong> ${cliente.Email}</p>
+            <p><strong>Ciudad:</strong> ${cliente.Ciudad || 'No registra'}</p>
+            <hr>
+            <p><strong>Total Compras:</strong> ${cliente['Total cant']}</p>
+            <p><strong>Monto Total:</strong> ${cliente['Total monto']}</p>
+            <p><strong>Categoría:</strong> <span class="badge">${cliente['Prog Fidelización']}</span></p>
+        `;
+    } else {
+        alert("Clienta no encontrada en la base de datos.");
+        contenedorRaiz.classList.add('hidden');
+    }
+}
+
+// Event Listeners
+document.getElementById('btnBuscarCliente').addEventListener('click', buscarCliente);
+document.addEventListener('DOMContentLoaded', cargarDatosFidelizacion);
+
+
+
+
 //v2
