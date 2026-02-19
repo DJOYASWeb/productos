@@ -707,9 +707,7 @@ function generarTextoEnPantalla() {
         beneficios = "- 5% DCTO en tu próxima compra\n- Puntos acumulables por cada compra";
     }
 
-    const mensaje = `¡Hola ${nombre}! ✨
-
-Perteneces al grupo *"${categoria}"* 💎
+    const mensaje = `${nombre}! tu grupo es *"${categoria}"* 💎
 
 Correspondiente al período de compras desde el 10/01/2025 al 10/01/2026.
 
