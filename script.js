@@ -692,31 +692,44 @@ function generarTextoEnPantalla() {
     }
 
     const nombre = clientaActual.Nombre || "Clienta";
-    const categoria = clientaActual['Prog Fidelización'] || "General";
+    const categoriaRaw = clientaActual['Prog Fidelización'] || "General";
     const compras = clientaActual['Total cant'] || "0";
-    // Formateamos el monto para que se vea limpio en el mensaje
     const montoTotal = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(clientaActual['Total monto'] || 0);
     
-    // Definimos beneficios según la categoría (puedes editar estos textos)
+    // Asignación de Emoji y Beneficios según categoría
+    let categoriaConEmoji = "";
     let beneficios = "";
-    if (categoria.toLowerCase().includes("diamante")) {
+
+    // Convertimos a minúsculas para comparar sin errores de tipeo
+    const cat = categoriaRaw.toLowerCase();
+
+    if (cat.includes("diamante")) {
+        categoriaConEmoji = "💎 Diamante";
         beneficios = "- 15% DCTO en toda la tienda\n- Envío gratis en todas tus compras\n- Regalo por mes de cumpleaños";
-    } else if (categoria.toLowerCase().includes("oro") || categoria.toLowerCase().includes("gold")) {
+    } else if (cat.includes("oro") || cat.includes("gold")) {
+        categoriaConEmoji = "🟡 Oro";
         beneficios = "- 10% DCTO en toda la tienda\n- Acceso anticipado a nuevas colecciones";
+    } else if (cat.includes("plata") || cat.includes("silver")) {
+        categoriaConEmoji = "⚪ Plata";
+        beneficios = "- 7% DCTO en toda la tienda\n- Puntos acumulables";
+    } else if (cat.includes("bronce") || cat.includes("bronze")) {
+        categoriaConEmoji = "🟤 Bronce";
+        beneficios = "- 5% DCTO en toda la tienda\n- Puntos acumulables";
     } else {
-        beneficios = "- 5% DCTO en tu próxima compra\n- Puntos acumulables por cada compra";
+        categoriaConEmoji = categoriaRaw;
+        beneficios = "- Consulta tus beneficios en tienda";
     }
 
-    const mensaje = `${nombre}! tu grupo es *"${categoria}"* 💎
+    const mensaje = `${nombre} perteneces al grupo *"${categoriaConEmoji}"*
 
 Correspondiente al período de compras desde el 10/01/2025 al 10/01/2026.
 
 ✅ Realizaste ${compras} compras por un total de ${montoTotal}.
 
-*Beneficios grupo ${categoria}:*
+*Beneficios grupo ${categoriaConEmoji}:*
 ${beneficios}
 
-¡Gracias por ser parte de DJOYAS! 💍`;
+¡Gracias por preferir DJOYAS! ✨`;
 
     document.getElementById('textoMensaje').value = mensaje;
     document.getElementById('areaMensaje').classList.remove('hidden');
