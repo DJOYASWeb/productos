@@ -696,35 +696,32 @@ function generarTextoEnPantalla() {
     const compras = clientaActual['Total cant'] || "0";
     const montoTotal = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(clientaActual['Total monto'] || 0);
     
-    // Asignación de Emoji y Beneficios según categoría
     let categoriaConEmoji = "";
     let beneficios = "";
-
-    // Convertimos a minúsculas para comparar sin errores de tipeo
     const cat = categoriaRaw.toLowerCase();
 
     if (cat.includes("diamante")) {
         categoriaConEmoji = "💎 Diamante";
-        beneficios = "- 15% DCTO en toda la tienda\n- Envío gratis en todas tus compras\n- Regalo por mes de cumpleaños";
-    } else if (cat.includes("oro") || cat.includes("gold")) {
+        beneficios = "✅ 10% DCTO fijo menos $400.000\n✅ 12% DCTO sobre $400.000\n✅ 15% DCTO sobre $800.000\n✅ 20% DCTO sobre $1.200.000\n✅ 24% DCTO sobre $3.000.000\n✅ Acceso a catalogodejoyas.cl\n✅ Ofertas web anticipadas\n✅ Regalo de Navidad anual";
+    } else if (cat.includes("oro")) {
         categoriaConEmoji = "🟡 Oro";
-        beneficios = "- 10% DCTO en toda la tienda\n- Acceso anticipado a nuevas colecciones";
-    } else if (cat.includes("plata") || cat.includes("silver")) {
+        beneficios = "✅ 5% DCTO menos $400.000\n✅ 7% DCTO sobre $400.000\n✅ 12% DCTO sobre $800.000\n✅ 15% DCTO sobre $1.200.000\n✅ 20% DCTO sobre $1.600.000\n✅ Acceso a catalogodejoyas.cl\n✅ Ofertas web anticipadas\n✅ Regalo de Navidad anual";
+    } else if (cat.includes("plata")) {
         categoriaConEmoji = "⚪ Plata";
-        beneficios = "- 7% DCTO en toda la tienda\n- Puntos acumulables";
-    } else if (cat.includes("bronce") || cat.includes("bronze")) {
+        beneficios = "✅ 7% DCTO sobre $400.000\n✅ 12% DCTO sobre $800.000\n✅ 15% DCTO sobre $1.200.000\n✅ 20% DCTO sobre $1.600.000\n✅ Ofertas web anticipadas\n✅ Acceso a catalogodejoyas.cl";
+    } else if (cat.includes("bronce")) {
         categoriaConEmoji = "🟤 Bronce";
-        beneficios = "- 5% DCTO en toda la tienda\n- Puntos acumulables";
+        beneficios = "✅ 7% DCTO sobre $400.000\n✅ 12% DCTO sobre $800.000\n✅ 15% DCTO sobre $1.200.000\n✅ Ofertas web anticipadas\n✅ Acceso a catalogodejoyas.cl";
     } else {
         categoriaConEmoji = categoriaRaw;
-        beneficios = "- Consulta tus beneficios en tienda";
+        beneficios = "✅ Consulta tus beneficios vigentes en tienda.";
     }
 
     const mensaje = `${nombre} perteneces al grupo *"${categoriaConEmoji}"*
 
 Correspondiente al período de compras desde el 10/01/2025 al 10/01/2026.
 
-✅ Realizaste ${compras} compras por un total de ${montoTotal}.
+📈 Realizaste ${compras} compras por un total de ${montoTotal}.
 
 *Beneficios grupo ${categoriaConEmoji}:*
 ${beneficios}
@@ -734,6 +731,7 @@ ${beneficios}
     document.getElementById('textoMensaje').value = mensaje;
     document.getElementById('areaMensaje').classList.remove('hidden');
 }
+
 
 // 3. Registro de eventos (dentro de tu DOMContentLoaded)
 document.getElementById('btnBuscarCliente').addEventListener('click', buscarCliente);
