@@ -737,7 +737,7 @@ ${textoCompras}
 *Estatus:*
 ${beneficios}
 
-¡Te invitamos a seguir sumando en DJOYAS! ✨`;
+¡Te invitamos a seguir comprando en DJOYAS! ✨`;
 
     // Si tiene grupo, usamos el formato anterior, si no, el de "no perteneces"
     const mensajeFinal = (compras <= 3 && !cat.includes("bronce") && !cat.includes("plata") && !cat.includes("oro") && !cat.includes("diamante"))
