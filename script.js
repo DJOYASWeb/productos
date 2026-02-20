@@ -702,16 +702,16 @@ function generarTextoEnPantalla() {
 
     // Lógica de Mensaje y Beneficios
     if (cat.includes("diamante")) {
-        categoriaConEmoji = "💎 Diamante";
+        categoriaConEmoji = "Diamante 💎";
         beneficios = "✅ 10% DCTO fijo menos $400.000\n✅ 12% DCTO sobre $400.000\n✅ 15% DCTO sobre $800.000\n✅ 20% DCTO sobre $1.200.000\n✅ 24% DCTO sobre $3.000.000\n✅ Acceso a catalogodejoyas.cl\n✅ Ofertas web anticipadas\n✅ Regalo de Navidad anual";
     } else if (cat.includes("oro")) {
-        categoriaConEmoji = "🟡 Oro";
+        categoriaConEmoji = "Oro 🟡";
         beneficios = "✅ 5% DCTO menos $400.000\n✅ 7% DCTO sobre $400.000\n✅ 12% DCTO sobre $800.000\n✅ 15% DCTO sobre $1.200.000\n✅ 20% DCTO sobre $1.600.000\n✅ Acceso a catalogodejoyas.cl\n✅ Ofertas web anticipadas\n✅ Regalo de Navidad anual";
     } else if (cat.includes("plata")) {
-        categoriaConEmoji = "⚪ Plata";
+        categoriaConEmoji = "Plata ⚪";
         beneficios = "✅ 7% DCTO sobre $400.000\n✅ 12% DCTO sobre $800.000\n✅ 15% DCTO sobre $1.200.000\n✅ 20% DCTO sobre $1.600.000\n✅ Ofertas web anticipadas\n✅ Acceso a catalogodejoyas.cl";
     } else if (cat.includes("bronce")) {
-        categoriaConEmoji = "🟤 Bronce";
+        categoriaConEmoji = "Bronce 🟤";
         beneficios = "✅ 7% DCTO sobre $400.000\n✅ 12% DCTO sobre $800.000\n✅ 15% DCTO sobre $1.200.000\n✅ Ofertas web anticipadas\n✅ Acceso a catalogodejoyas.cl";
     } else if (compras <= 3) {
         // CASO ESPECIAL: 3 O MENOS COMPRAS / SIN GRUPO
