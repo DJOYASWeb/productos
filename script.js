@@ -692,14 +692,15 @@ function generarTextoEnPantalla() {
     }
 
     const nombre = clientaActual.Nombre || "Clienta";
-    const categoriaRaw = clientaActual['Prog Fidelización'] || "General";
-    const compras = clientaActual['Total cant'] || "0";
+    const categoriaRaw = clientaActual['Prog Fidelización'] || "";
+    const compras = parseInt(clientaActual['Total cant']) || 0;
     const montoTotal = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(clientaActual['Total monto'] || 0);
     
     let categoriaConEmoji = "";
     let beneficios = "";
     const cat = categoriaRaw.toLowerCase();
 
+    // Lógica de Mensaje y Beneficios
     if (cat.includes("diamante")) {
         categoriaConEmoji = "💎 Diamante";
         beneficios = "✅ 10% DCTO fijo menos $400.000\n✅ 12% DCTO sobre $400.000\n✅ 15% DCTO sobre $800.000\n✅ 20% DCTO sobre $1.200.000\n✅ 24% DCTO sobre $3.000.000\n✅ Acceso a catalogodejoyas.cl\n✅ Ofertas web anticipadas\n✅ Regalo de Navidad anual";
@@ -712,23 +713,38 @@ function generarTextoEnPantalla() {
     } else if (cat.includes("bronce")) {
         categoriaConEmoji = "🟤 Bronce";
         beneficios = "✅ 7% DCTO sobre $400.000\n✅ 12% DCTO sobre $800.000\n✅ 15% DCTO sobre $1.200.000\n✅ Ofertas web anticipadas\n✅ Acceso a catalogodejoyas.cl";
+    } else if (compras <= 3) {
+        // CASO ESPECIAL: 3 O MENOS COMPRAS / SIN GRUPO
+        const comprasFaltantes = 4 - compras;
+        categoriaConEmoji = "Sin grupo asignado";
+        beneficios = `❌ Aún no cuentas con beneficios de grupo.\n🚀 ¡Te faltan solo ${comprasFaltantes} compras para llegar al nivel *Bronce* y desbloquear descuentos exclusivos!`;
     } else {
-        categoriaConEmoji = categoriaRaw;
+        categoriaConEmoji = "General";
         beneficios = "✅ Consulta tus beneficios vigentes en tienda.";
     }
 
-    const mensaje = `${nombre} perteneces al grupo *"${categoriaConEmoji}"*
+    // Ajuste de texto para compras
+    const textoCompras = compras > 0 
+        ? `📈 Realizaste ${compras} compras por un total de ${montoTotal}.`
+        : `⚠️ No registras compras en el periodo indicado.`;
+
+    const mensaje = `${nombre}, actualmente no perteneces a ningún grupo de fidelización.
 
 Correspondiente al período de compras desde el 10/01/2025 al 10/01/2026.
 
-📈 Realizaste ${compras} compras por un total de ${montoTotal}.
+${textoCompras}
 
-*Beneficios grupo ${categoriaConEmoji}:*
+*Estatus:*
 ${beneficios}
 
-¡Gracias por preferir DJOYAS! ✨`;
+¡Te invitamos a seguir sumando en DJOYAS! ✨`;
 
-    document.getElementById('textoMensaje').value = mensaje;
+    // Si tiene grupo, usamos el formato anterior, si no, el de "no perteneces"
+    const mensajeFinal = (compras <= 3 && !cat.includes("bronce") && !cat.includes("plata") && !cat.includes("oro") && !cat.includes("diamante"))
+        ? mensaje 
+        : `${nombre} perteneces al grupo *"${categoriaConEmoji}"*\n\nCorrespondiente al período de compras desde el 10/01/2025 al 10/01/2026.\n\n${textoCompras}\n\n*Beneficios grupo ${categoriaConEmoji}:*\n${beneficios}\n\n¡Gracias por preferir DJOYAS! ✨`;
+
+    document.getElementById('textoMensaje').value = mensajeFinal;
     document.getElementById('areaMensaje').classList.remove('hidden');
 }
 
