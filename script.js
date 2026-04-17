@@ -594,7 +594,7 @@ let datosFidelizacion = [];
 // 1. Cargar los datos al iniciar la página
 async function cargarDatosFidelizacion() {
     try {
-        const response = await fetch('assets/data/Fidelizacion - enero 2025-2026.xlsx');
+        const response = await fetch('assets/data/Fidelizacion.xlsx');
         const arrayBuffer = await response.arrayBuffer();
         const workbook = XLSX.read(arrayBuffer);
         const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
